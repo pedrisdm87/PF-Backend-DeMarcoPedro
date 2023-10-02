@@ -1,0 +1,74 @@
+<div class="container mt-5">
+    <h2 class="text-center">Cartelera de Cine</h2>
+
+    <hr />
+
+    <div class="table-responsive my-5">
+        <h2 class="text-center">Productos</h2>
+        <table class="table table-bordered table-striped table-hover text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Código</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                    <tr>
+                        <td>{{this.title}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.code}}</td>
+                        <td>{{this.category}}</td>
+                        <td>{{this.stock}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <hr />
+
+    <div class="text-center">
+        {{#if paginateInfo.hasPrevPage}}
+            <a class="btn btn-primary" href="{{paginateInfo.prevLink}}">Anterior</a>
+        {{/if}}
+        
+        {{#each paginateInfo.totalPages}}
+            <a class="btn btn-secondary" href="{{this.link}}">{{this.page}}</a>
+        {{/each}}
+        
+        {{#if paginateInfo.hasNextPage}}
+            <a class="btn btn-primary" href="{{paginateInfo.nextLink}}">Siguiente</a>
+        {{/if}}
+    </div>
+</div>
+
+<script>
+    function addProductToCart(pid) {
+        fetch(`/api/carts`, {
+            method: 'post'
+        })
+        .then(result => result.json())
+        .then(result => {
+            if (result.status === 'error') throw new Error(result.error);
+            return result.payload._id;
+        })
+        .then(cid =>
+            fetch(`/api/carts/${cid}/product/${pid}`, {
+                method: 'post'
+            })
+        )
+        .then(result => result.json())
+        .then(result => {
+            if (result.status === 'error') throw new Error(result.error);
+            alert(`¡Ok! Todo salió bien. El producto se agregó al carrito con id=${result.payload._id}!`);
+        })
+        .catch(err => alert(`Ocurrió un error: ${err}`));
+    }
+</script>
+
