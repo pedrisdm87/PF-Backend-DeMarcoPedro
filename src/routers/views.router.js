@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
         let link
         for (let index = 1; index <= result.response.totalPages; index++) {
             if (!req.query.page) {
-                link = `http://${req.hostname}:${PORT}${req.originalUrl}&page=${index}`
+                link = `http://${req.hostname}:${PORT}${req.originalUrl}?&page=${index}`
             } else {
                 const modifiedUrl = req.originalUrl.replace(`page=${req.query.page}`, `page=${index}`)
                 link = `http://${req.hostname}:${PORT}${modifiedUrl}`

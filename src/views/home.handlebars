@@ -25,6 +25,8 @@
                         <td>{{this.code}}</td>
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
+                        <td><button class="btn btn-info" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button></td>
+
                     </tr>
                 {{/each}}
             </tbody>
