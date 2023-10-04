@@ -1,20 +1,31 @@
-<div align="center">
+<br>
+<br>
+<br>
 
-<h2> Bienvenido {{first_name}}</h2>
-
+<div class="container mt-5 text-center">
+    <h2>Bienvenido {{first_name}}</h2>
 </div>
 
-<div>
-    <ul>
-        <li>Nombre: {{first_name}}</li>
-        <li>Apellido: {{last_name}}</li>
-        <li>Email: {{email}}</li>
-        <li>Edad: {{age}}</li>
-        <li>Role: {{role}}</li>
+<div class="container mt-3">
+    <ul class="list-group">
+        <li class="list-group-item">Nombre: {{first_name}}</li>
+        <li class="list-group-item">Apellido: {{last_name}}</li>
+        <li class="list-group-item">Email: {{email}}</li>
+        <li class="list-group-item">Edad: {{age}}</li>
+        <li class="list-group-item">Role: {{role}}</li>
     </ul>
 </div>
 
-<div>
-    [<a href="/products">Products</a> | <a href="/api/sessions/logout"> logout </a>]
-    
+<div class="container mt-3">
+    <p>
+        <a href="/products" class="btn btn-primary">Products</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
+    </p>
 </div>
+<style>
+        body {
+            background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>

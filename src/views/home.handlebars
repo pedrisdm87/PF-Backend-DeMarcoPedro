@@ -1,8 +1,13 @@
 <hr />
-<br> 
-<h2 align="center"> Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile"> {{user.email}}</a>)  - Role: {{user.role}}</h2>
-<br><br>
-<h5 align="center"><a href="/api/sessions/logout"> Cerrar Sesion </a> </h5>
+<br>
+<br>
+<br>
+<br>
+<div class="container text-center mt-3">
+    <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
+    <br>
+    <h5><a href="/api/sessions/logout" class="text-danger">Cerrar Sesión</a></h5>
+</div>
 <hr />
 
 <div class="container mt-5">
@@ -22,6 +27,7 @@
                     <th>Código</th>
                     <th>Categoría</th>
                     <th>Stock</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +40,6 @@
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
                         <td><button class="btn btn-info" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button></td>
-
                     </tr>
                 {{/each}}
             </tbody>
@@ -82,3 +87,11 @@
     }
 </script>
 
+<style>
+        body {
+            background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
