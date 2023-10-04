@@ -3,10 +3,14 @@ import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import Sockets from './sockets.js'
 import mongoose from 'mongoose'
+import session from 'express-session'
+import MongoStore from "connect-mongo";
 import productsRouter from './routers/product.router.js'
 import cartsRouter from './routers/cart.router.js'
 import viewsRouter from './routers/views.router.js'
 import chatRouter from './routers/chat.router.js'
+import sessionViewsRouter from './routers/session.views.router.js'
+import sessionRouter from './routers/session.router.js';
 
 const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/'
 const MONGO_DB_NAME = 'ecommerce'
@@ -18,6 +22,16 @@ app.use(express.static('./src/public'))
 app.engine('handlebars', handlebars.engine())
 app.set('views', './src/views')
 app.set('view engine', 'handlebars')
+app.use(express.urlencoded({ extended: true }));
+app.use(session ({
+  store: MongoStore.create({
+    mongoUrl: "mongodb+srv://coder:coder@cluster0.9dp3egu.mongodb.net/",
+    dbName: "ecommerce"
+  }),
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}))
 
 
 
@@ -35,12 +49,15 @@ try {
         next()
     })
 
-    app.get('/', (req, res) => res.render('index'))
+    
+    app.use('/', sessionViewsRouter)
+    app.use('/api/sessions', sessionRouter)
     app.use('/api/products', productsRouter)
     app.use('/api/carts', cartsRouter)
     app.use('/products', viewsRouter)
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
+    
 
     Sockets(io)
 } catch(err) {

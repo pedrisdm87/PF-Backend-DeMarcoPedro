@@ -2,6 +2,7 @@ import { Router } from "express"
 import { getProducts } from "./product.router.js"
 import { getProductsFromCart } from "./cart.router.js"
 import { PORT } from '../app.js'
+import { publicRoutes } from '../middlewares/auth.middleware.js'
 
 const router = Router()
 
@@ -19,7 +20,8 @@ router.get('/', async (req, res) => {
             }
             totalPages.push({ page: index, link })
         }
-        res.render('home', { products: result.response.payload, paginateInfo: {
+        const user = req.session.user
+        res.render('home', { user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
                 hasNextPage: result.response.hasNextPage,
                 prevLink: result.response.prevLink,
