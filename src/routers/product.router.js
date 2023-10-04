@@ -4,16 +4,25 @@ import { PORT } from "../app.js";
 
 const router = Router();
 
-export const getProducts = async (req, res) => {
+
+ export const getProducts = async (req, res) => {
   try {
-    const limit = req.query.limit || 10;
-    const page = req.query.page || 1;
-    const filterOptions = {};
-    if (req.query.stock) filterOptions.stock = req.query.stock;
-    if (req.query.category) filterOptions.category = req.query.category;
+    
+    const { limit = 10, page = 1, stock, category, sort } = req.query;
+
+    const filterOptions = { ...(stock && { stock }), ...(category && { category }) };
+
     const paginateOptions = { lean: true, limit, page };
-    if (req.query.sort === "asc") paginateOptions.sort = { price: 1 };
-    if (req.query.sort === "desc") paginateOptions.sort = { price: -1 };
+   
+    //const limit = req.query.limit || 10;
+   // const page = req.query.page || 1;
+   // const filterOptions = {};
+   // if (req.query.stock) filterOptions.stock = req.query.stock;
+   // if (req.query.category) filterOptions.category = req.query.category;
+   // const paginateOptions = { lean: true, limit, page };
+   // if (req.query.sort === "asc") paginateOptions.sort = { price: 1 };
+   // if (req.query.sort === "desc") paginateOptions.sort = { price: -1 };
+   
     const result = await productModel.paginate(filterOptions, paginateOptions);
 
     let prevLink;
@@ -58,7 +67,7 @@ if (!req.query.page) {
       response: { status: "error", error: err.message },
     };
   }
-};
+}; 
 
 router.get("/", async (req, res) => {
   const result = await getProducts(req, res);
