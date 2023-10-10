@@ -10,10 +10,13 @@
             <input type="text" name="email" class="form-control" required>
         </div>
 
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
+       <div class="form-group password-container">
+                <label for="password">Password:</label>
+                <input type="password" name="password" class="form-control" id="password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁‍🗨</span>
+                <br>
+                <br>
+            </div>
 
         <div class="form-group">
             <input type="submit" value="Iniciar Sesión" class="btn btn-primary">
@@ -23,6 +26,18 @@
     </form>
 </div>
 
+ <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
+
 <style>
         body {
             background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
@@ -30,4 +45,14 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+
+        .toggle-password {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
     </style>
+
+    
