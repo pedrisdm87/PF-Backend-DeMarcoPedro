@@ -3,6 +3,16 @@ import UserModel from "../dao/models/user.model.js"
 
 const router = Router()
 
+//Vista para registrar usuarios
+
+router.get('/register', (req, res) => {
+    res.render('sessions/register')
+})
+
+
+
+//API para registrar usuarios en la DB
+
 router.post('/register', async (req, res) => {
     
     const newUser = req.body
@@ -11,11 +21,23 @@ router.post('/register', async (req, res) => {
     res.redirect('/')
 })
 
+
+//Vista de Login
+router.get('/login', (req, res) => {
+    res.render('sessions/login')
+})
+
+
+//API para login
+
 router.post('/login', async (req, res) => {
     const { email, password } = req.body
+    
     const user = await UserModel.findOne({email, password}).lean().exec()
     if (!user) {
-        return res.redirect('/')
+        return res.status(401).render('errors/base', {
+            error: 'Error en email y/o password'
+        })
     }
     if (user.email === 'adminCoder@coder.com' && user.password === 'adminCod3er123') {
         user.role = 'admin'
@@ -26,6 +48,9 @@ router.post('/login', async (req, res) => {
 req.session.user = user
 res.redirect('/products')
 })
+
+
+//Cerrar Session
 
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {

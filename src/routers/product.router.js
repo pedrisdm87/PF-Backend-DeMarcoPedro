@@ -69,6 +69,8 @@ if (!req.query.page) {
   }
 }; 
 
+
+
 router.get("/", async (req, res) => {
   const result = await getProducts(req, res);
   res.status(result.statusCode).json(result.response);

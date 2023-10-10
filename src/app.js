@@ -23,6 +23,8 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', './src/views')
 app.set('view engine', 'handlebars')
 app.use(express.urlencoded({ extended: true }));
+
+
 app.use(session ({
   store: MongoStore.create({
     mongoUrl: "mongodb+srv://coder:coder@cluster0.9dp3egu.mongodb.net/",
