@@ -7,6 +7,10 @@ router.get('/register', async (req, res) => {
     res.render('sessions/register')
 })
 
+router.get('/forgottenpassword', async (req, res) => {
+    res.render('sessions/forgottenpassword')
+})
+
 router.get('/', privateRoutes, async (req, res) => {  
 res.render('sessions/login')
 })
