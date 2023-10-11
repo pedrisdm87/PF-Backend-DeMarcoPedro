@@ -1,28 +1,35 @@
 import { Router } from "express";
 import UserModel from "../dao/models/user.model.js"
+import passport from "passport";
 
 const router = Router()
 
-//Vista para registrar usuarios
 
-router.get('/register', (req, res) => {
-    res.render('sessions/register')
+//API para crear usuarios en la DB
+
+
+router.post('/register', 
+passport.authenticate('register', {failureRedirect: '/api/sessions/failRegister'}), //este es el middleware
+async(req, res) => {
+    res.redirect('/')
 })
 
-
-
-//API para registrar usuarios en la DB
-
+/*
 router.post('/register', async (req, res) => {
     
+  
     const newUser = req.body
     const user = new UserModel(newUser)
     await user.save()
     res.redirect('/')
 })
+*/
+
+router.get('/failRegister', (req, res) => res.send({ error: 'Passport register failed' }))// aca se crea la ruta de failRegister
 
 
-//Vista de Login
+
+//Sessions da a la vista de Login
 router.get('/login', (req, res) => {
     res.render('sessions/login')
 })
@@ -30,7 +37,22 @@ router.get('/login', (req, res) => {
 
 //API para login
 
-router.post('/login', async (req, res) => {
+     router.post('/login', passport.authenticate('login', {failureRedirect: '/api/sessions/failLogin'}), async (req, res) => {
+    if (!req.user) {
+        return res.status(400).send({ status: 'error', error: 'Invalid credentials' })
+    }
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        age: req.user.age,
+        role: req.user.role
+    }
+    res.redirect('/products')
+    })
+
+
+/*router.post('/login', async (req, res) => {
     const { email, password } = req.body
     
     const user = await UserModel.findOne({email, password}).lean().exec()
@@ -48,6 +70,20 @@ router.post('/login', async (req, res) => {
 req.session.user = user
 res.redirect('/products')
 })
+*/
+
+router.get('/failLogin', (req, res) => res.send({ error: 'Passport login failed' }))
+
+
+//Vista para registrar usuarios
+
+router.get('/register', (req, res) => {
+    res.render('sessions/register')
+})
+
+
+
+
 
 
 //Cerrar Session
@@ -62,6 +98,17 @@ router.get('/logout', (req, res) => {
         }
     });
 });
+
+//Github
+
+router.get('/github', passport.authenticate('github', {scope:['user:email']}), (req, res) => { })  //email lo tomo como usuario
+
+
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), async(req, res) => {
+    console.log('Callback: ', req.user)
+    req.session.user = req.user
+    res.redirect('/products')
+})
 
 
 export default router

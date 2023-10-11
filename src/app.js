@@ -5,6 +5,8 @@ import Sockets from './sockets.js'
 import mongoose from 'mongoose'
 import session from 'express-session'
 import MongoStore from "connect-mongo";
+import passport from "passport";    //corre de la libreria 
+import initializePassport from "./config/passport.config.js";  // funcion que escribi en config
 import productsRouter from './routers/product.router.js'
 import cartsRouter from './routers/cart.router.js'
 import viewsRouter from './routers/views.router.js'
@@ -12,17 +14,16 @@ import chatRouter from './routers/chat.router.js'
 import sessionViewsRouter from './routers/session.views.router.js'
 import sessionRouter from './routers/session.router.js';
 
+
+
 const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/'
 const MONGO_DB_NAME = 'ecommerce'
 export const PORT = 8080
 
 const app = express()
 app.use(express.json())
-app.use(express.static('./src/public'))
-app.engine('handlebars', handlebars.engine())
-app.set('views', './src/views')
-app.set('view engine', 'handlebars')
 app.use(express.urlencoded({ extended: true }));
+//app.use(express.static('./src/public'))
 
 
 app.use(session ({
@@ -34,6 +35,22 @@ app.use(session ({
   resave: true,
   saveUninitialized: true
 }))
+
+//Handlebars configuration
+
+app.engine('handlebars', handlebars.engine())
+app.set('views', './src/views')
+app.set('view engine', 'handlebars')
+app.use(express.urlencoded({ extended: true }));
+
+////Passport
+
+initializePassport() 
+app.use(passport.initialize())  
+app.use(passport.session())   
+
+
+
 
 
 
