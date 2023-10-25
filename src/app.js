@@ -31,6 +31,7 @@ app.use(session ({
     mongoUrl: "mongodb+srv://coder:coder@cluster0.9dp3egu.mongodb.net/",
     dbName: "ecommerce"
   }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }, // Duración de la sesión en milisegundos
   secret: 'secret',
   resave: true,
   saveUninitialized: true
@@ -74,8 +75,10 @@ try {
     app.use('/api/products', productsRouter)
     app.use('/api/carts', cartsRouter)
     app.use('/products', viewsRouter)
+    //app.use('/productsFromCart', viewsRouter)
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
+
     
 
     Sockets(io)

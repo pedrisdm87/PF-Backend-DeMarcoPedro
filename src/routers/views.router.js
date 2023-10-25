@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
             totalPages.push({ page: index, link })
         }
         const user = req.session.user
+        console.log(user)
         res.render('home', { user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
                 hasNextPage: result.response.hasNextPage,

@@ -4,7 +4,7 @@
 <br>
 <br>
 <div class="container text-center mt-3">
-    <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
+    <h2>Usuario: {{user.cart}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
     <br>
     <h5><a href="/api/sessions/logout" class="text-danger">Cerrar Sesión</a></h5>
 </div>
@@ -39,7 +39,7 @@
                         <td>{{this.code}}</td>
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
-                        <td><button class="btn btn-info" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button></td>
+                        <td><button class="btn btn-info" onclick="addProductToCart('{{user.cart}}', '{{this._id}}')">Agregar al carrito</button></td>
                     </tr>
                 {{/each}}
             </tbody>
@@ -63,8 +63,11 @@
     </div>
 </div>
 
-<script>
-    function addProductToCart(pid) {
+
+
+    <script>
+    /* CREO UN CARRITO Y LE ASIGNO UN PRODUCTO
+        function addProductToCart(pid) {
         fetch(`/api/carts`, {
             method: 'post'
         })
@@ -85,7 +88,31 @@
         })
         .catch(err => alert(`Ocurrió un error: ${err}`));
     }
+    */
+function addProductToCart(cid, pid) {
+   
+  fetch(`/api/carts/${cid}/product/${pid}`, {
+    method: 'post',
+  })
+    .then(result => {
+      if (!result.ok) {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+      }
+      return result.json();
+    })
+    .then(result => {
+      if (result.status === 'error') {
+        throw new Error(result.error);
+      } else {
+        alert(`¡Producto agregado al carrito con éxito!`);
+      }
+    })
+    .catch(err => alert(`Ocurrió un error: ${err}`));
+} 
+
 </script>
+
+
 
 <style>
         body {

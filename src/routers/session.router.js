@@ -8,8 +8,7 @@ const router = Router()
 //API para crear usuarios en la DB
 
 
-router.post('/register', 
-passport.authenticate('register', {failureRedirect: '/api/sessions/failRegister'}), //este es el middleware
+router.post('/register', passport.authenticate('register', {failureRedirect: '/api/sessions/failRegister'}), //este es el middleware
 async(req, res) => {
     res.redirect('/')
 })

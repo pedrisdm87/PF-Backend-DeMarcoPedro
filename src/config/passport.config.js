@@ -3,12 +3,13 @@ import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import { createHash, isValidPassword } from "../utils.js"
 import userModel from "../dao/models/user.model.js"
+import cartModel from "../dao/models/cart.model.js"
 
 
 const localStrategy = local.Strategy 
 
 const initializePassport = () => {
-    //logica de registro ---ahora este es el middleware
+    
     passport.use('register', new localStrategy({
         passReqToCallback: true,
         usernameField: 'email'
@@ -19,8 +20,10 @@ const initializePassport = () => {
             if (user){
                 return done(null, false)
             }
+            const cartForNewUser = await cartModel.create({})
             const newUser = {
-                first_name, last_name, email, age, role:'user', password: createHash(password)
+                first_name, last_name, email, age, role:'user', password: createHash(password), cart: cartForNewUser._id,
+                role: (email === 'adminCoder@coder.com') ? 'admin' : 'user'
             }
             const result = await userModel.create(newUser)
             return done (null, result)
@@ -56,19 +59,21 @@ const initializePassport = () => {
     //credenciales de terceros
     passport.use('github', new GitHubStrategy({
         clientID: 'Iv1.d8815f345a71fa02', 
-        clientSecret: '103f18e1bced055693c482a109bb355947f2d020',
+        clientSecret: 'e68ac39e48a15fd15b4840c2635a9c0f0f38b3a8',
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
     }, async(accessToken, refreshToken, profile, done) =>{
         console.log(profile)
         try{
+            const cartForNewUser = await cartModel.create({})
             const user = await userModel.findOne({email: profile._json.email})
-            if (user) return done(null, user) //si ya existe el ususario no lo guarda en base de datos
+            if (user) return done(null, user) //si ya existe el usuario no lo guarda en base de datos
             const newUser = await userModel.create({
                 first_name: profile._json.login,
                 last_name: profile._json.name,
                 email: profile._json.email,
                 password: profile._json.password,
-                role: profile._json.type
+                role: profile._json.type,
+                cart: cartForNewUser._id,
             })
             return done(null, newUser)
         }catch(err) {
