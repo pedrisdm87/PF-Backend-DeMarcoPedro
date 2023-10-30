@@ -44,32 +44,14 @@ router.get('/login', (req, res) => {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         email: req.user.email,
-        age: req.user.age,
-        role: req.user.role
+        //age: req.user.age,
+        role: req.user.role,
+        cart: req.user.cart
     }
     res.redirect('/products')
     })
 
 
-/*router.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    
-    const user = await UserModel.findOne({email, password}).lean().exec()
-    if (!user) {
-        return res.status(401).render('errors/base', {
-            error: 'Error en email y/o password'
-        })
-    }
-    if (user.email === 'adminCoder@coder.com' && user.password === 'adminCod3er123') {
-        user.role = 'admin'
-    app.use('/', sessionViewsRouter)
-} else {
-    user.role = 'user'
-}
-req.session.user = user
-res.redirect('/products')
-})
-*/
 
 router.get('/failLogin', (req, res) => res.send({ error: 'Passport login failed' }))
 

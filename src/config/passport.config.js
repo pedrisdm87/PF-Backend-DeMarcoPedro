@@ -37,7 +37,7 @@ const initializePassport = () => {
         usernameField: 'email',
     }, async(username, password, done) => {
         try {
-            /*if (username === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+            if (username === 'adminCoder@coder.com' && password === 'adminCod3r123') {
                 const admin = {
                     _id: 'admin', 
                     first_name: 'Administrador',
@@ -46,7 +46,7 @@ const initializePassport = () => {
                 };
                 return done(null, admin);
             }
-                */
+                
             const user = await userModel.findOne({ email: username })
             if (!user) {
                 return done(null, false)
@@ -70,6 +70,7 @@ const initializePassport = () => {
             const newUser = await userModel.create({
                 first_name: profile._json.login,
                 last_name: profile._json.name,
+                //age: profile._json.age,
                 email: profile._json.email,
                 password: profile._json.password,
                 role: profile._json.type,

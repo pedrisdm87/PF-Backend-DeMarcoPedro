@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session ({
   store: MongoStore.create({
-    mongoUrl: "mongodb+srv://coder:coder@cluster0.9dp3egu.mongodb.net/",
+    mongoUrl: 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/',
     dbName: "ecommerce"
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 24 }, // Duración de la sesión en milisegundos
