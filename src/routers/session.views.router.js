@@ -1,22 +1,15 @@
 import { Router } from "express";
 import { privateRoutes, publicRoutes } from "../middlewares/auth.middleware.js"
+import { sessionRegisterController, sessionForgottenPasswordController, sessionLoginController, sessionProfileController} from "../controllers/sessionViews.controller.js"
 
 const router = Router()
 
-router.get('/register', async (req, res) => {
-    res.render('sessions/register')
-})
+router.get('/register', sessionRegisterController)
 
-router.get('/forgottenpassword', async (req, res) => {
-    res.render('sessions/forgottenpassword')
-})
+router.get('/forgottenpassword', sessionForgottenPasswordController)
 
-router.get('/', async (req, res) => {  
-res.render('sessions/login')
-})
+router.get('/', sessionLoginController)
 
-router.get('/profile',publicRoutes, (req, res) => { 
-    res.render('sessions/profile', req.session.user)
-})
+router.get('/profile',publicRoutes, sessionProfileController)
 
 export default router
