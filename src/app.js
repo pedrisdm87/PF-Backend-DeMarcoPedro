@@ -13,12 +13,15 @@ import viewsRouter from './routers/views.router.js'
 import chatRouter from './routers/chat.router.js'
 import sessionViewsRouter from './routers/session.views.router.js'
 import sessionRouter from './routers/session.router.js';
+import config from './config/config.js'
 
 
 
-const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/'
-const MONGO_DB_NAME = 'ecommerce'
-export const PORT = 8080
+
+
+//const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/'
+//const MONGO_DB_NAME = 'ecommerce'
+//export const PORT = 8080
 
 const app = express()
 app.use(express.json())
@@ -28,8 +31,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session ({
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/',
-    dbName: "ecommerce"
+    mongoUrl: config.mongo.uri,
+    dbName: config.mongo.dbName,
   }),
   cookie: { maxAge: 1000 * 60 * 60 * 24 }, // Duración de la sesión en milisegundos
   secret: 'secret',
@@ -57,12 +60,12 @@ app.use(passport.session())
 
 
 try {
-    await mongoose.connect(MONGO_URI, { 
-        dbName: MONGO_DB_NAME,
+    await mongoose.connect(config.mongo.uri, { 
+        dbName: config.mongo.dbName,
         useUnifiedTopology: true
     })
     console.log('DB connected!')
-    const server = app.listen(PORT, () => console.log('Server Up'))
+    const server = app.listen(config.apiserver.port, () => console.log('Server Up'))
     const io = new Server(server)
     app.use((req, res, next) => {
         req.io = io

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import productModel from "../dao/models/product.model.js";
-import { PORT } from "../app.js";
+import config from "../config/config.js";
 import {productsResponse, getProductsbyIDController, createProductOnDBController, updateProductByIdController, deleteProductByIdController} from "../controllers/product.controller.js"
 
 const router = Router();

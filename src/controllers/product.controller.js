@@ -1,6 +1,5 @@
 import productModel from "../dao/models/product.model.js";
-import { PORT } from '../app.js'
-//import config from "../config/config.js";
+import config from "../config/config.js";
 
 
 
@@ -17,22 +16,22 @@ export const getProducts = async (req, res) => { //from DB
   
       let prevLink;
   if (!req.query.page) {
-    prevLink = `http://${req.hostname}:${PORT}${req.originalUrl}?&page=${result.prevPage}`;
+    prevLink = `http://${req.hostname}:${config.apiserver.port}${req.originalUrl}?&page=${result.prevPage}`;
   } else {
     const modifiedUrl = req.originalUrl.includes('page=')
       ? req.originalUrl.replace(/page=\d+/, `page=${result.prevPage}`)
       : `${req.originalUrl}?page=${result.prevPage}`;
-    prevLink = `http://${req.hostname}:${PORT}${modifiedUrl}`;
+    prevLink = `http://${req.hostname}:${config.apiserver.port}${modifiedUrl}`;
   }
   
   let nextLink;
   if (!req.query.page) {
-    nextLink = `http://${req.hostname}:${PORT}${req.originalUrl}?&page=${result.nextPage}`;
+    nextLink = `http://${req.hostname}:${config.apiserver.port}${req.originalUrl}?&page=${result.nextPage}`;
   } else {
     const modifiedUrl = req.originalUrl.includes('page=')
       ? req.originalUrl.replace(/page=\d+/, `page=${result.nextPage}`)
       : `${req.originalUrl}?&page=${result.nextPage}`;
-    nextLink = `http://${req.hostname}:${PORT}${modifiedUrl}`;
+    nextLink = `http://${req.hostname}:${config.apiserver.port}${modifiedUrl}`;
   }
   
   
