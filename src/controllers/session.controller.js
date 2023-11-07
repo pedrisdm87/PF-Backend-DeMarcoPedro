@@ -5,16 +5,6 @@ import passport from "passport";
 export const registerController = async (req, res) => {
     res.redirect('/');
   };
-/*
-router.post('/register', async (req, res) => {
-    
-  
-    const newUser = req.body
-    const user = new UserModel(newUser)
-    await user.save()
-    res.redirect('/')
-})
-*/
 
 export const failRegisterController = async (req, res) => res.send({ error: 'Passport register failed' })
 
