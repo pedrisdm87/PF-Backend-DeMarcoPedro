@@ -89,6 +89,8 @@
         .catch(err => alert(`Ocurrió un error: ${err}`));
     }
     */
+
+    
 function addProductToCart(cid, pid) {
    
   fetch(`/api/carts/${cid}/product/${pid}`, {
@@ -109,9 +111,6 @@ function addProductToCart(cid, pid) {
     })
     .catch(err => alert(`Ocurrió un error: ${err}`));
 } 
-
-</script>
-
 
 
 <style>

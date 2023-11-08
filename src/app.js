@@ -14,6 +14,7 @@ import chatRouter from './routers/chat.router.js'
 import sessionViewsRouter from './routers/session.views.router.js'
 import sessionRouter from './routers/session.router.js';
 import config from './config/config.js'
+import { privateRoutes, publicRoutes } from "../src/middlewares/auth.middleware.js"
 
 
 
@@ -77,8 +78,8 @@ try {
     app.use('/api/sessions', sessionRouter)
     app.use('/api/products', productsRouter)
     app.use('/api/carts', cartsRouter)
-    app.use('/products', viewsRouter)
-    //app.use('/productsFromCart', viewsRouter)
+    app.use('/products', privateRoutes, viewsRouter)
+    app.use('/productsFromCart', viewsRouter)
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
 
