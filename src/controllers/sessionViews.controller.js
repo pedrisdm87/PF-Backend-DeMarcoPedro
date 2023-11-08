@@ -1,4 +1,3 @@
-import { privateRoutes, publicRoutes } from "../middlewares/auth.middleware.js"
 import UserDTO from "../dto/usersDTO.js"
 
 
