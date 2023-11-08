@@ -6,7 +6,10 @@
 <div class="container text-center mt-3">
     <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
     <br>
-    <h5><a href="/api/sessions/logout" class="text-danger">Cerrar Sesión</a></h5>
+      <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a>
+    <br>
+    <br>
+<h5><a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a></h5>
 </div>
 <hr />
 
@@ -39,8 +42,7 @@
                         <td>{{this.code}}</td>
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
-                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td>
-                    </tr>
+                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td>                    </tr>
                 {{/each}}
             </tbody>
         </table>
@@ -66,31 +68,7 @@
 
 
     <script>
-    /* CREO UN CARRITO Y LE ASIGNO UN PRODUCTO
-        function addProductToCart(pid) {
-        fetch(`/api/carts`, {
-            method: 'post'
-        })
-        .then(result => result.json())
-        .then(result => {
-            if (result.status === 'error') throw new Error(result.error);
-            return result.payload._id;
-        })
-        .then(cid =>
-            fetch(`/api/carts/${cid}/product/${pid}`, {
-                method: 'post'
-            })
-        )
-        .then(result => result.json())
-        .then(result => {
-            if (result.status === 'error') throw new Error(result.error);
-            alert(`¡Ok! Todo salió bien. El producto se agregó al carrito con id=${result.payload._id}!`);
-        })
-        .catch(err => alert(`Ocurrió un error: ${err}`));
-    }
-    */
-
-    
+   
 function addProductToCart(cid, pid) {
    
   fetch(`/api/carts/${cid}/product/${pid}`, {
@@ -111,6 +89,9 @@ function addProductToCart(cid, pid) {
     })
     .catch(err => alert(`Ocurrió un error: ${err}`));
 } 
+
+</script>
+
 
 
 <style>
