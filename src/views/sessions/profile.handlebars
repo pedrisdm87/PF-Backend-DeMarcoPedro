@@ -3,16 +3,16 @@
 <br>
 
 <div class="container mt-5 text-center">
-    <h2>Bienvenido {{first_name}}</h2>
+    <h2>Bienvenido {{userDto.first_name}}</h2>
 </div>
 
 <div class="container mt-3">
     <ul class="list-group">
-        <li class="list-group-item">Nombre: {{first_name}}</li>
-        <li class="list-group-item">Apellido: {{last_name}}</li>
-        <li class="list-group-item">Email: {{email}}</li>
-        <li class="list-group-item">Edad: {{age}}</li>
-        <li class="list-group-item">Role: {{role}}</li>
+       <li class="list-group-item">Nombre: {{userDto.first_name}}</li>
+        <li class="list-group-item">Apellido: {{userDto.last_name}}</li>
+        <li class="list-group-item">Email: {{userDto.email}}</li>
+        <li class="list-group-item">Edad: {{userDto.age}}</li>
+        <li class="list-group-item">Role: {{userDto.role}}</li>
     </ul>
 </div>
 
