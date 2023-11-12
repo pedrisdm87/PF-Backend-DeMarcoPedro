@@ -40,11 +40,21 @@ export const realTimeProductsVRController = async  (req, res) => {
     }
 }
 
-export const cartViewRouterController = async(req, res) => {
-    const result = await getProductsFromCart(req, res)
-    if (result.statusCode === 200) {
-        res.render('productsFromCart', { cart: result.response.payload })
-    } else {
-        res.status(result.statusCode).json({ status: 'error', error: result.response.error })
+export const cartViewRouterController = async (req, res) => {
+    try {
+        const result = await getProductsFromCart(req, res);
+
+        if (result.statusCode === 200 && result.response && result.response.payload) {
+            res.render('productsFromCart', { cart: result.response.payload });
+        } else {
+            res.status(result.statusCode || 500).json({
+                status: 'error',
+                error: result.response ? result.response.error : 'Internal Server Error'
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: 'error', error: 'Internal Server Error' });
     }
 }
+    
