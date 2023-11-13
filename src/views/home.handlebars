@@ -42,7 +42,8 @@
                         <td>{{this.code}}</td>
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
-                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td>                    </tr>
+                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td> 
+                     </tr>
                 {{/each}}
             </tbody>
         </table>
@@ -89,6 +90,26 @@ function addProductToCart(cid, pid) {
     })
     .catch(err => alert(`Ocurrió un error: ${err}`));
 } 
+
+function removeProductFromCart(cid, pid) {
+  fetch(`/api/carts/${cid}/product/${pid}`, {
+    method: 'delete',  // Utiliza el método 'delete' para la solicitud de eliminación
+  })
+    .then(result => {
+      if (!result.ok) {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+      }
+      return result.json();
+    })
+    .then(result => {
+      if (result.status === 'error') {
+        throw new Error(result.error);
+      } else {
+        alert(`¡Producto eliminado del carrito con éxito!`);
+      }
+    })
+    .catch(err => alert(`Ocurrió un error: ${err}`));
+}
 
 </script>
 

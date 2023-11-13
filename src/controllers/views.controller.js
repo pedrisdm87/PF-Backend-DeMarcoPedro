@@ -1,5 +1,6 @@
 import { getProducts } from "./product.controller.js"
 import { getProductsFromCart } from "./cart.controller.js"
+import * as cartDAO from '../dao/cart.dao.js';
 import config from "../config/config.js"
 
 export const getProductsViewRouterController = async (req, res) => {
@@ -18,7 +19,8 @@ export const getProductsViewRouterController = async (req, res) => {
         }
         const user = req.session.user
         console.log(user)
-        res.render('home', { user, products: result.response.payload, paginateInfo: {
+        res.render('home', {
+            user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
                 hasNextPage: result.response.hasNextPage,
                 prevLink: result.response.prevLink,
@@ -31,7 +33,7 @@ export const getProductsViewRouterController = async (req, res) => {
     }
 }
 
-export const realTimeProductsVRController = async  (req, res) => {
+export const realTimeProductsVRController = async (req, res) => {
     const result = await getProducts(req, res)
     if (result.statusCode === 200) {
         res.render('realTimeProducts', { products: result.response.payload })
@@ -42,19 +44,17 @@ export const realTimeProductsVRController = async  (req, res) => {
 
 export const cartViewRouterController = async (req, res) => {
     try {
-        const result = await getProductsFromCart(req, res);
-
-        if (result.statusCode === 200 && result.response && result.response.payload) {
-            res.render('productsFromCart', { cart: result.response.payload });
+        const id = req.params.cid
+        const result = await cartDAO.getCartById(id);
+        console.log(result)
+        if (!result) {
+            return res.status(500).send({ status: 'error', error: 'Internal Server Error' });
         } else {
-            res.status(result.statusCode || 500).json({
-                status: 'error',
-                error: result.response ? result.response.error : 'Internal Server Error'
-            });
+            res.render('productsFromCart', { cart: result });
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+        return res.status(500).send({ status: 'error', error: 'Internal Server Error' });
     }
 }
-    
+
