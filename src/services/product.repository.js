@@ -1,18 +1,16 @@
 const ProductRepository = (productDAO) => {
-    const getProducts = async (req, res) => await productDAO.getProducts(req, res)
-    const getProductsbyIDController = async (req, res) => await productDAO.getProductsByID(req, res)
-    const deleteProductByIdController = async (req, res) => await productDAO.deleteProductById(req, res)
-    const updateProductByIdController = async (req, res) => await productDAO.updateProductById(req,res)
-    const createProductOnDBController = async (req, res) => await productDAO.createProductOnDBController(req, res)
-    const productsResponse = async (req, res) => await productDAO.getProducts(req, res)
+    const getProductsFromDB = async (filterOptions, paginateOptions) => await productDAO.getProductsFromDB(filterOptions, paginateOptions)
+    const getProductByIDFromDB = async (id) => await productDAO.getProductByIDFromDB(id)
+    const deleteProductByIDFromDB = async (id) => await productDAO.deleteProductByIDFromDB(id)
+    const updateProductInDB = async (id, data) => await productDAO.updateProductInDB(id, data)
+    const createProductInDB = async (productData) => await productDAO.createProductInDB(productData)
 
     return {
-        getProducts,
-        getProductsbyIDController,
-        deleteProductByIdController,
-        updateProductByIdController,
-        createProductOnDBController,
-        productsResponse
+        getProductsFromDB,
+        getProductByIDFromDB,
+        deleteProductByIDFromDB,
+        updateProductInDB,
+        createProductInDB        
     }
 }
 

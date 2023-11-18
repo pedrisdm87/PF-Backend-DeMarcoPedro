@@ -1,6 +1,7 @@
 import productModel from './models/product.model.js';
 
-const productDao = { 
+
+const productDAO = { 
 
 getProductsFromDB : async (filterOptions, paginateOptions) => {
   try {
@@ -55,4 +56,4 @@ createProductInDB : async (productData) => {
 },
 }
 
-export default productDao;
+export default productDAO ;
