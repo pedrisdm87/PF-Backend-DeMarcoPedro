@@ -1,7 +1,7 @@
 import { getProducts } from "./product.controller.js"
 import { getProductsFromCart } from "./cart.controller.js"
-import * as cartDAO from '../dao/cart.dao.js';
 import config from "../config/config.js"
+import { CartService } from "../services/services.js";
 
 export const getProductsViewRouterController = async (req, res) => {
     const result = await getProducts(req, res)
@@ -45,7 +45,7 @@ export const realTimeProductsVRController = async (req, res) => {
 export const cartViewRouterController = async (req, res) => {
     try {
         const id = req.params.cid
-        const result = await cartDAO.getCartById(id);
+        const result = await CartService.getCartById(id);
         console.log(result)
         if (!result) {
             return res.status(500).send({ status: 'error', error: 'Internal Server Error' });

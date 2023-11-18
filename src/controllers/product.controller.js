@@ -1,7 +1,7 @@
 import productModel from "../dao/models/product.model.js";
 import config from "../config/config.js";
+import { ProductService } from "../services/services.js";
 
-import { getProductsFromDB, getProductByIDFromDB, deleteProductByIDFromDB, updateProductInDB, createProductInDB,   } from '../dao/product.dao.js';
 
 export const getProducts = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ export const getProducts = async (req, res) => {
     const filterOptions = { ...(stock && { stock }), ...(category && { category }) };
     const paginateOptions = { lean: true, limit, page };
 
-    const result = await getProductsFromDB(filterOptions, paginateOptions);
+    const result = await ProductService.getProductsFromDB(filterOptions, paginateOptions);
 
     let prevLink;
     if (!req.query.page) {
@@ -59,7 +59,7 @@ export const getProductsbyIDController = async (req, res) => {
     const id = req.params.pid;
     
     // Llamar a la función del DAO para obtener un producto por ID
-    const result = await getProductByIDFromDB(id);
+    const result = await ProductService.getProductByIDFromDB(id);
 
     if (result === null) {
       return res.status(404).json({ status: "error", error: "Not found" });
@@ -75,14 +75,14 @@ export const deleteProductByIdController = async (req, res) => {
   try {
     const id = req.params.pid;
 
-    const result = await deleteProductByIDFromDB(id);
+    const result = await ProductService.deleteProductByIDFromDB(id);
 
     if (result === null) {
       return res.status(404).json({ status: "error", error: "Not found" });
     }
 
     // Ahora, podemos llamar a una función del DAO para obtener la lista de productos actualizada
-    const updatedProducts = await getProductsFromDB();
+    const updatedProducts = await ProductService.getProductsFromDB();
 
     // Emitir una actualización al cliente o realizar otras acciones si es necesario
     req.io.emit("updatedProducts", updatedProducts);
@@ -98,14 +98,13 @@ export const updateProductByIdController = async (req, res) => {
     const id = req.params.pid;
     const data = req.body;
     
-    // Llamar a la función del DAO para actualizar el producto en la base de datos
-    const result = await updateProductInDB(id, data);
+    const result = await ProductService.updateProductInDB(id, data);
     
     if (result === null) {
       return res.status(404).json({ status: "error", error: "Not found" });
     }
     
-    // Actualizar la lista de productos (puede que desees mover esto a una función en el DAO)
+    // Actualizar la lista de productos (mover esto a una función en el DAO)
     const products = await productModel.find().lean().exec();
     req.io.emit("updatedProducts", products);
     
@@ -120,12 +119,12 @@ export const createProductOnDBController = async (req, res) => {
     const product = req.body;
 
     // Llamar a la función del DAO para crear un producto
-    const result = await createProductInDB(product);
+    const result = await ProductService.createProductInDB(product);
 
-    // Recuperar la lista actualizada de productos (opcional)
+    // Recuperar la lista actualizada de productos 
     const products = await productModel.find().lean().exec();
     
-    // Emitir evento de actualización (opcional)
+    // Emitir evento de actualización 
     req.io.emit("updatedProducts", products);
 
     res.status(201).json({ status: "success", payload: result });
@@ -135,7 +134,7 @@ export const createProductOnDBController = async (req, res) => {
 };
 
 export const productsResponse = async (req, res) => {
-  const result = await getProducts(req, res);
+  const result = await ProductService.getProducts(req, res);
   res.status(result.statusCode).json(result.response);
 };
 

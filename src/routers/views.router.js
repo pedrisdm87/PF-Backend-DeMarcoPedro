@@ -4,13 +4,15 @@ import { getProductsFromCart } from "../controllers/cart.controller.js"
 import config from "../config/config.js"
 import { publicRoutes, privateRoutes } from '../middlewares/auth.middleware.js'
 import { getProductsViewRouterController, realTimeProductsVRController, cartViewRouterController } from "../controllers/views.controller.js"
+import { handlePolices } from "../middlewares/auth.middleware.js"
+
 
 const router = Router()
 
-router.get('/', getProductsViewRouterController)
+router.get('/', handlePolices(['USER', 'ADMIN']), getProductsViewRouterController)
 
-router.get('/realTimeProducts', realTimeProductsVRController)
+router.get('/realTimeProducts', handlePolices(['USER', 'ADMIN']), realTimeProductsVRController)
 
-router.get('/:cid', cartViewRouterController)
+router.get('/:cid', handlePolices(['USER', 'ADMIN']), cartViewRouterController)
 
 export default router
