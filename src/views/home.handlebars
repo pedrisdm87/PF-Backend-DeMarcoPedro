@@ -42,7 +42,7 @@
                         <td>{{this.code}}</td>
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
-                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td> 
+                        <td><button class="btn btn-success" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td> 
                      </tr>
                 {{/each}}
             </tbody>
@@ -71,11 +71,13 @@
     <script>
    
 function addProductToCart(cid, pid) {
-   
-  fetch(`/api/carts/${cid}/product/${pid}`, {
+     
+  fetch(`./api/carts/${cid}/product/${pid}`, {
+    
     method: 'post',
   })
     .then(result => {
+      console.log(result)
       if (!result.ok) {
         throw new Error(`Error: ${result.status} - ${result.statusText}`);
       }

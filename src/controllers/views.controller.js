@@ -1,5 +1,5 @@
 import { getProducts } from "./product.controller.js"
-import { getProductsFromCart } from "./cart.controller.js"
+//import { getProductsFromCart } from "./cart.controller.js"
 import config from "../config/config.js"
 import { CartService } from "../services/services.js";
 
