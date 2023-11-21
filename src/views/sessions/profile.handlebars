@@ -11,14 +11,13 @@
        <li class="list-group-item">Nombre: {{userDto.first_name}}</li>
         <li class="list-group-item">Apellido: {{userDto.last_name}}</li>
         <li class="list-group-item">Email: {{userDto.email}}</li>
-        <li class="list-group-item">Edad: {{userDto.age}}</li>
         <li class="list-group-item">Role: {{userDto.role}}</li>
     </ul>
 </div>
 
 <div class="container mt-3">
     <p>
-        <a href="/products" class="btn btn-primary">Products</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
+        <a href="/products" class="btn btn-primary">Products</a> | <a href="/carts/{{userDto.cart}}" class="btn btn-primary">Ir al carrito 🛒</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
     </p>
 </div>
 <style>
