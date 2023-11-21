@@ -6,6 +6,7 @@
 <div class="container text-center mt-3">
     <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
     <br>
+    <h2>carrito numero: {{user.cart}}</h2>
       <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a>
     <br>
     <br>
@@ -72,7 +73,7 @@
    
 function addProductToCart(cid, pid) {
    
-  fetch(`/api/carts/${cid}/product/${pid}`, {
+  fetch(`./api/carts/${cid}/product/${pid}`, {
     method: 'post',
   })
     .then(result => {

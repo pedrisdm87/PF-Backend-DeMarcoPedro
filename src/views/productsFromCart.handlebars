@@ -32,7 +32,7 @@
             <td>{{this.product.code}}</td>
             <td>{{this.product.stock}}</td>
             <td>{{this.quantity}}</td>
-            <td><button class="btn btn-danger" onclick="removeProductFromCart('{{../user.cart}}', '{{this._id}}')">Eliminar del carrito</button></td>
+            <td><button class="btn btn-danger" onclick="removeProductFromCart('{{./user.cart}}', '{{this._id}}')">Eliminar del carrito</button></td>
         </tr>
         {{/each}}
     </tbody>

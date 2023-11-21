@@ -1,6 +1,6 @@
 import productModel from '../dao/models/product.model.js'
+import cartModel from "../dao/models/cart.model.js"
 import { CartService } from '../services/services.js'
-import { ProductService } from '../services/services.js'
 
 
 export const getProductsFromCart = async (req, res) => {
@@ -35,7 +35,7 @@ export const createCartController = async (req, res) => {
 }
 
 export const getCartByIdController = async (req, res) => {
-    const result = await ProductService.getProductsFromCart(req, res)
+    const result = await getProductsFromCart(req, res)
     res.status(result.statusCode).json(result.response)
 }
 
@@ -43,7 +43,7 @@ export const updatedCartController = async (req, res) => {
     try {
         const cid = req.params.cid
         const pid = req.params.pid
-        const cartToUpdate = await CartService.findById(cid)
+        const cartToUpdate = await cartModel.findById(cid)
         if (cartToUpdate === null) {
             return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
         }
@@ -57,7 +57,7 @@ export const updatedCartController = async (req, res) => {
         } else {
             cartToUpdate.products.push({ product: pid, quantity: 1 })
         }
-        const result = await CartService.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
+        const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
         res.status(201).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
@@ -68,7 +68,7 @@ export const deleteProductFromCartController = async (req, res) => {
     try {
         const cid = req.params.cid
         const pid = req.params.pid
-        const cartToUpdate = await CartService.findById(cid)
+        const cartToUpdate = await cartModel.findById(cid)
         if (cartToUpdate === null) {
             return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
         }
@@ -82,7 +82,7 @@ export const deleteProductFromCartController = async (req, res) => {
         } else {
             cartToUpdate.products = cartToUpdate.products.filter(item => item.product.toString() !== pid)
         }
-        const result = await CartService.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
+        const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
@@ -92,7 +92,7 @@ export const deleteProductFromCartController = async (req, res) => {
 export const updatedCartDataController = async (req, res) => {
     try {
         const cid = req.params.cid
-        const cartToUpdate = await CartService.findById(cid)
+        const cartToUpdate = await cartModel.findById(cid)
         if (cartToUpdate === null) {
             return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
         }
@@ -118,7 +118,7 @@ export const updatedCartDataController = async (req, res) => {
         }
         //end: validaciones del array enviado por body
         cartToUpdate.products = products
-        const result = await CartService.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
+        const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
@@ -129,7 +129,7 @@ export const updatedCartController1 = () =>async (req, res) => {
     try {
         const cid = req.params.cid
         const pid = req.params.pid
-        const cartToUpdate = await CartService.findById(cid)
+        const cartToUpdate = await cartModel.findById(cid)
         if (cartToUpdate === null) {
             return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
         }
@@ -155,7 +155,7 @@ export const updatedCartController1 = () =>async (req, res) => {
             cartToUpdate.products[productIndex].quantity = quantity
         }
         //end: validaciones de quantity enviado por body
-        const result = await CartService.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
+        const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
@@ -165,12 +165,12 @@ export const updatedCartController1 = () =>async (req, res) => {
 export const deleteCartController = async (req, res) => {
     try {
         const cid = req.params.cid
-        const cartToUpdate = await CartService.findById(cid)
+        const cartToUpdate = await cartModel.findById(cid)
         if (cartToUpdate === null) {
             return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
         }
         cartToUpdate.products = []
-        const result = await CartService.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
+        const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, { returnDocument: 'after' })
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
