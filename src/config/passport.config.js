@@ -92,7 +92,7 @@ const initializePassport = () => {
         if (id === 'admin') {
             const adminUser = {
                 _id: 'admin',
-                username: 'adminCoder@coder.com',
+                username: config.admin.email,
                 role: 'admin',
             };
             return done(null, adminUser);

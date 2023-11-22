@@ -18,5 +18,12 @@ export default {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: process.env.GITHUB_CALLBACK_URL,
+    },
+    checkout: {
+        checkoutUser: process.env.NODEMAILER_USER,
+        checkoutPass: process.env.NODEMAILER_PASS,
+        checkoutSmsSid: process.env.TWILIO_ACCOUNT_SID,
+        checkoutSmsToken: process.env.TWILIO_AUTH_TOKEN,
+        checkoutNumero: process.env.TWILIO_PHONE_NUMBER
     }
 }

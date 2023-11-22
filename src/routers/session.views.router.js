@@ -10,6 +10,6 @@ router.get('/forgottenpassword', sessionForgottenPasswordController)
 
 router.get('/', sessionLoginController)
 
-router.get('/profile',publicRoutes, sessionProfileController)
+router.get('/current',publicRoutes, sessionProfileController)
 
 export default router

@@ -4,13 +4,9 @@
 <br>
 <br>
 <div class="container text-center mt-3">
-    <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/profile">{{user.email}}</a>) - Role: {{user.role}}</h2>
+    <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/current">{{user.email}}</a>) - Role: {{user.role}}</h2>
     <br>
-    <h2>carrito numero: {{user.cart}}</h2>
-      <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a>
-    <br>
-    <br>
-<h5><a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a></h5>
+    <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info"> Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
 </div>
 <hr />
 

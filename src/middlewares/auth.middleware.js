@@ -7,7 +7,7 @@ export const privateRoutes = (req, res, next) => {
     next();
 }
 
-export const handlePolices = policies => (req, res, next) => {
+export const handlePolicies = policies => (req, res, next) => {
     if (policies.includes('PUBLIC')) return next()
     if (!req.session.user) return res.status(401).json({ status: 'error', error: 'You must be registered!' })
     if (policies.length > 0) {

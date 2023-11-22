@@ -15,6 +15,6 @@ export const sessionLoginController = async (req, res) => {
 
 export const sessionProfileController = async (req, res) => {
     const userDto = new UserDTO(req.session.user);
-    res.render('sessions/profile', {userDto});
+    res.render('sessions/current', {userDto});
   };
   
