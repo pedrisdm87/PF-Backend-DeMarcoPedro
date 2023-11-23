@@ -45,18 +45,21 @@
 <script>
 
 deleteProductCart = (cid, pid) => {
-  fetch(`/api/carts/{{cart._id}}/product/${pid}`, {
-    method: "delete",
-  })
-    .then((result) => result.json())
+ console.log(`/api/carts/${cid}/product/${pid}`);
+fetch(`/api/carts/${cid}/product/${pid}`, {
+  method: "delete",
+})
+  .then((result) => result.json())
     .then((result) => {
-     if (result.status === 'error') throw new Error(result.error) 
-        alert(`Producto Eliminado del carrito con éxito id=${result.payload._id}`);
-
+      if (result.status === 'error') throw new Error(result.error);
+      alert(`Producto Eliminado del carrito con éxito id=${result.payload._id}`);
     })
-    .catch(error => alert('Ocurrio un error,' + error));
-    
+    .catch(error => alert('Ocurrió un error: ' + error));
 };
+
+
+
+
 const checkout = async () => {
   try {
     const response = await fetch(`/api/carts/{{cart._id}}/purchase`, {

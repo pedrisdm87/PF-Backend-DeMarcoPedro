@@ -59,7 +59,7 @@ export const checkoutGmail = async (req, res) => {
         let mail = Mailgenerator.generate(response);
 
         let message = {
-            from: 'Dpto Ventas - Look Fashion <lookfashion@gmail.com>',
+            from: 'Movies - <movies@gmail.com>',
             to: destinatario,
             subject: `Compra  realizada con éxito`, 
             html: mail
