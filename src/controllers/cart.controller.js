@@ -1,12 +1,17 @@
 import productModel from '../dao/models/product.model.js'
 import cartModel from "../dao/models/cart.model.js"
 import { CartService } from '../services/services.js'
+import { ProductService } from '../services/services.js'
+import  ticketModel  from '../dao/models/ticket.model.js'
+import generarCodigo from '../utils.js'
+
+
 
 
 export const getProductsFromCart = async (req, res) => {
     try {
         const id = req.params.cid
-        const result = await CartService.findById(id).populate('products.product').lean()
+        const result = await CartService.getCartById(id).populate('products.product').lean()
         if (result === null) {
             return {
                 statusCode: 404,
@@ -27,7 +32,7 @@ export const getProductsFromCart = async (req, res) => {
 
 export const createCartController = async (req, res) => {
     try {
-        const result = await CartService.create({})
+        const result = await CartService.createCart({})
         res.status(201).json({ status: 'success', payload: result })
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
@@ -181,7 +186,7 @@ export const deleteCartController = async (req, res) => {
 export const purchaseController = async(req, res) => {
     try {
       const cid = req.params.cid
-      const cartToPurchase = await CartService.findById(cid)
+      const cartToPurchase = await CartService.getCartById(cid)
   
       if (cartToPurchase === null) {
         return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
@@ -192,7 +197,7 @@ export const purchaseController = async(req, res) => {
       let amount = 0
   
       for (let index = 0; index < cartToPurchase.products.length; index++) {
-        const productToPurchase = await ProductService.getById(cartToPurchase.products[index].product)
+        const productToPurchase = await ProductService.getProductByIDFromDB(cartToPurchase.products[index].product)
   
         if (productToPurchase === null) {
           return res.status(400).json({ status: 'error', error: `Product with id=${cartToPurchase.products[index].product} does not exist. We cannot purchase this product` })
@@ -202,7 +207,7 @@ export const purchaseController = async(req, res) => {
           
            //actualizamos el stock del producto que se está comprando
            productToPurchase.stock -= cartToPurchase.products[index].quantity
-          await ProductService.update(productToPurchase._id, { stock: productToPurchase.stock })
+          await ProductService.updateProductInDB(productToPurchase._id, { stock: productToPurchase.stock })
   
           //eliminamos (del carrito) los productos que se han comparado (en memoria)
           productsAfterPurchse = productsAfterPurchse.filter(item => item.product.toString() !== cartToPurchase.products[index].product.toString())
@@ -216,13 +221,13 @@ export const purchaseController = async(req, res) => {
         
       }
        //eliminamos (del carrito) los productos que se han comparado
-       await CartService.update(cid, {
+       await CartService.updateCart(cid, {
         products: productsAfterPurchse}, {
           returnDocument: 'after' })
   
           //creamos el Ticket
           const result = await ticketModel.create({
-            code: shortid.generate(),
+            code: generarCodigo(12),
             products: productsToTicket,
             amount,
             purchaser: req.session.user.email

@@ -5,7 +5,7 @@
 <h2>Products from Cart</h2>
 <br>
 <br>
-<a href="/products" class="btn btn-primary">Products</a> | <a class="btn btn-warning" href="#" id="botonCompra">Comprar</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
+<a href="/products" class="btn btn-primary">Products</a> | <a class="btn btn-warning" href="/api/carts/{{cart._id}}/purchase" id="botonCompra">Comprar</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
 </div>
 <br>
 
@@ -165,14 +165,14 @@ await checkoutCorreo();
 
    await checkoutSms({ phoneNumber });
 
-  } catch (error) {
-    Swal.fire({
+  } catch (error) 
+   /* {Swal.fire({
       title: 'Error',
       text: 'Ocurrió un error durante la compra. Por favor, inténtalo de nuevo.',
       icon: 'error',
     });
   }
-});
+});*/
 </script>
 
 
