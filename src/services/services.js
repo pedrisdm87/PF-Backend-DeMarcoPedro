@@ -4,9 +4,12 @@ import ProductRepository from './product.repository.js'
 import productDAO from '../dao/product.dao.js'
 import UserRepository from "./user.repository.js";
 import userDAO from '../dao/user.dao.js';
+import ticketDAO from '../dao/ticket.dao.js';
+import TicketRepository from './ticket.repository.js';
 
 
 
 export const CartService = CartRepository(cartDAO)
 export const ProductService = ProductRepository(productDAO)
 export const UserService = UserRepository(userDAO);
+export const TicketService = TicketRepository(ticketDAO)

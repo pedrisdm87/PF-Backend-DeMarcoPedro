@@ -12,7 +12,7 @@ export default {
     },
     admin:{
         email: process.env.ADMIN_EMAIL,
-        password: process.env.ADMIN_PASSWORD
+        password: process.env.ADMIN_PASS
     },
     github:{
         clientID: process.env.GITHUB_CLIENT_ID,

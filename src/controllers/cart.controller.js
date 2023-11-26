@@ -1,9 +1,10 @@
 import productModel from '../dao/models/product.model.js'
 import cartModel from "../dao/models/cart.model.js"
-import { CartService } from '../services/services.js'
-import { ProductService } from '../services/services.js'
+import { CartService, ProductService } from '../services/services.js'
 import  ticketModel  from '../dao/models/ticket.model.js'
 import generarCodigo from '../utils.js'
+import getbill from '../services/email.service.js'
+import { TicketService } from '../services/services.js'
 
 
 
@@ -184,57 +185,61 @@ export const deleteCartController = async (req, res) => {
 
 
 export const purchaseController = async(req, res) => {
+    const cid = req.params.cid
+    
     try {
-      const cid = req.params.cid
-      const cartToPurchase = await CartService.getCartById(cid)
+      const cart = await CartService.getCartById(cid)
+      if (!cart) {
+        return res.status(404).json({ status: 'error', error: `Carts not found!` });
+    }
   
-      if (cartToPurchase === null) {
-        return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
+      if (cart.products.length === 0) {
+        return res.status(404).json({ status: 'error', error: `Carts empty` })
       }
   
-      let productsToTicket = []
-      let productsAfterPurchse = cartToPurchase.products
+      let ticketConProductos = []
+      let actualizacionDeCart = []
       let amount = 0
   
-      for (let index = 0; index < cartToPurchase.products.length; index++) {
-        const productToPurchase = await ProductService.getProductByIDFromDB(cartToPurchase.products[index].product)
-  
-        if (productToPurchase === null) {
-          return res.status(400).json({ status: 'error', error: `Product with id=${cartToPurchase.products[index].product} does not exist. We cannot purchase this product` })
+
+            for (const item of cart.products) {
+            const product = await ProductService.getProductByIDFromDB(item.product)
+           
+            if (!product) {
+                return res.status(404).json({ status: 'error', error: `Producto no encontrado` })
+            }
+            if (item.quantity <= product.stock) {
+                
+                const stockActualizado = (product.stock -= item.quantity)
+                await ProductService.updateProductInDB(product._id, stockActualizado)
+                
+                amount += product.price * item.quantity;
+                ticketConProductos.push({
+                    product: product._id,
+                    title: product.title,
+                    description: product.description,
+                    price: product.price,
+                    quantity: item.quantity,
+                })
+            } else {
+                actualizacionDeCart.push(item);
+            }
         }
-        
-        if (cartToPurchase.products[index].quantity <= productToPurchase.stock) {
-          
-           //actualizamos el stock del producto que se está comprando
-           productToPurchase.stock -= cartToPurchase.products[index].quantity
-          await ProductService.updateProductInDB(productToPurchase._id, { stock: productToPurchase.stock })
-  
-          //eliminamos (del carrito) los productos que se han comparado (en memoria)
-          productsAfterPurchse = productsAfterPurchse.filter(item => item.product.toString() !== cartToPurchase.products[index].product.toString())
-  
-          //calculamos el amount (total del ticket)
-          amount += (productToPurchase.price * cartToPurchase.products[index].quantity)
-  
-          //colocamos el producto en el Ticket (en memoria)
-          productsToTicket.push({ product: productToPurchase._id, price: productToPurchase.price, quantity: cartToPurchase.products[index].quantity})
-        }
-        
-      }
-       //eliminamos (del carrito) los productos que se han comparado
-       await CartService.updateCart(cid, {
-        products: productsAfterPurchse}, {
-          returnDocument: 'after' })
-  
-          //creamos el Ticket
-          const result = await ticketModel.create({
-            code: generarCodigo(12),
-            products: productsToTicket,
+            const ticket = await TicketService.createTicket({
+            code: generarCodigo(10), 
+            products: ticketConProductos,
             amount,
-            purchaser: req.session.user.email
-          })
-          
-          return res.status(201).json({ status: 'success', payload: result })
-    } catch(err) {
-      return res.status(500).json({ status: 'error', error: err.message })
-  }
-  }
+            purchaser: req.session.user.email 
+        })
+       
+        const emailResult = await getbill(req.session.user.email, ticket)
+
+        if (emailResult.success) {
+         res.status(200).json({ status: 'success', payload: ticket, message: emailResult.message })
+        } else {
+         res.status(500).json({ status: 'error', error: emailResult.error })
+        }
+    } catch (err) {
+        res.status(500).json({ status: 'error', error: err.message })
+    }
+}
