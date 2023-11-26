@@ -23,8 +23,13 @@ const getbill = async (destinatario, ticket) => {
     });
 
     console.log('ticket dentro del service', ticket)
+     
+    const totalAmount = ticket.products.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0);
 
     let response = {
+      
       body: {
         intro: "Your bill has arrived!",
         table: {
@@ -32,9 +37,10 @@ const getbill = async (destinatario, ticket) => {
             item: product.product,
             price: `$${product.price}`,
             quantity: product.quantity,
+            amount: `$${product.price * product.quantity}`
           })),
         },
-        outro: `Total Amount: $`,
+        outro: `Total Amount: $ ${totalAmount.toFixed(2)}`,
       },
     };
 

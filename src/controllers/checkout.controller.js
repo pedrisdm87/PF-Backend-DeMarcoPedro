@@ -44,17 +44,17 @@ const getbill = async (req, res) => {
 
     let response = {
         body: {
-            intro: "Your bill has arrived!",
+            intro: "Your ticket details are as follows:",
             table: {
-              data: detailedProducts.map((product) => ({
-                item: product.title,
+              data: ticket.products.map((product) => ({
+                item: product.product,
                 price: `$${product.price}`,
                 quantity: product.quantity,
               })),
             },
-            outro: `Looking forward to do more business`
-          }
-    }
+            outro: `Total Amountttt: $${ticket.amount.toFixed(2)}`,
+          },
+        };
     let mail = Mailgenerator.generate(response)
 
     let message = {

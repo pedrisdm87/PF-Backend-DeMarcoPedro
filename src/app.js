@@ -18,13 +18,6 @@ import { privateRoutes, publicRoutes } from "../src/middlewares/auth.middleware.
 import checkoutRouter  from './routers/checkout.router.js';
 
 
-
-
-
-//const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.tzksvyu.mongodb.net/'
-//const MONGO_DB_NAME = 'ecommerce'
-//export const PORT = 8080
-
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
@@ -84,6 +77,7 @@ try {
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
     app.use('/checkout', checkoutRouter)
+    
 
     
 
