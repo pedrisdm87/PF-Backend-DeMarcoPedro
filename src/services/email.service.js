@@ -27,7 +27,7 @@ const getbill = async (destinatario, ticket) => {
     const totalAmount = ticket.products.reduce((total, product) => {
       return total + product.price * product.quantity;
     }, 0);
-
+21654
     let response = {
       
       body: {

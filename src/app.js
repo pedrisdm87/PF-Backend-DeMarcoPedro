@@ -15,7 +15,7 @@ import sessionViewsRouter from './routers/session.views.router.js'
 import sessionRouter from './routers/session.router.js';
 import config from './config/config.js'
 import { privateRoutes, publicRoutes } from "../src/middlewares/auth.middleware.js"
-import checkoutRouter  from './routers/checkout.router.js';
+//import checkoutRouter  from './routers/checkout.router.js';
 
 
 const app = express()
@@ -76,7 +76,7 @@ try {
     app.use('/productsFromCart', viewsRouter)
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
-    app.use('/checkout', checkoutRouter)
+    //app.use('/checkout', checkoutRouter)
     
 
     
