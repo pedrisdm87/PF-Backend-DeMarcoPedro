@@ -35,7 +35,7 @@
             <td>{{this.product.code}}</td>
             <td>{{this.product.stock}}</td>
             <td>{{this.quantity}}</td>
-            <td><button class="btn btn-danger" onclick="deleteProductCart('{{./user.cart}}', '{{this._id}}')">Eliminar del carrito</button></td>
+            <td> <button class="btn btn-danger" onclick="deleteProduct({{product._id}})">Borrar Producto</button>
         </tr>
         {{/each}}
     </tbody>
@@ -44,20 +44,18 @@
 
 <script>
 
-deleteProductCart = (cid, pid) => {
- console.log(`/api/carts/${cid}/product/${pid}`);
-fetch(`/api/carts/${cid}/product/${pid}`, {
-  method: "delete",
-})
-  .then((result) => result.json())
-    .then((result) => {
-      if (result.status === 'error') throw new Error(result.error);
-      alert(`Producto Eliminado del carrito con éxito id=${result.payload._id}`);
-    })
-    .catch(error => alert('Ocurrió un error: ' + error));
-};
-
-
+   const deleteProduct = (pid) => {
+    fetch(`/api/products/${pid}`, {
+        method: 'delete'
+        })
+        .then(result => result.json())
+        .then(result => {
+            if (result.status === 'error') throw new Error(result.error)
+            alert(`Producto eliminado con exito`)
+            window.location.href = '/products'
+        })
+        .catch(err => alert(`Ocurrió un error :(\n${err}`))
+}
 
 
 const checkout = async () => {
@@ -92,7 +90,7 @@ const checkoutCorreo = () => {
       if (result.status === 'error') {
         throw new Error(result.error);
       } else {
-        console.log('Su compra fuen enviada por correo');
+        console.log('Su compra fue enviada por correo');
       }
     })
     .catch(error => alert('Ocurrió un error: ' + error));
@@ -132,8 +130,10 @@ botonCompra.addEventListener('click', async (event) => {
 await checkoutCorreo();
 
     const ticketDetails = await checkout();
+
+  
     
-   /* const phoneNumber = await Swal.fire({
+  const phoneNumber = await Swal.fire({
       title: '¡Compra realizada con éxito!',
       html: `
         <div style="text-align: left;">
@@ -172,7 +172,7 @@ await checkoutCorreo();
       icon: 'error',
     });
   }
-});*/
+});
 </script>
 
 
