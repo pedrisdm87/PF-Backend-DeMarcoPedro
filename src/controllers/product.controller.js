@@ -3,6 +3,7 @@ import config from "../config/config.js";
 import { ProductService } from "../services/services.js";
 import CustomError from '../services/errors/custom_error.js'
 import EErros from '../services/errors/enums.js'
+import { generateErrorInfo, generateErrorInfoTwo } from '../services/errors/description.js'
 
 
 export const getProducts = async (req, res) => {
@@ -66,12 +67,58 @@ export const getProductsbyIDController = async (req, res) => {
     if (result === null) {
       return res.status(404).json({ status: "error", error: "Not found" });
     }
-    
+
     res.status(200).json({ status: "success", payload: result });
   } catch (err) {
-    res.status(500).json({ status: "error", error: err.message });
+    if (err.name === "Error en busqueda de producto") {
+      // Manejo del error personalizado 
+      const customError = new CustomError({
+        name: "Error en busqueda de producto",
+        cause: generateErrorInfoTwo(result.response.payload),
+        message: "No se pudo obtener el producto por su ID",
+        code: EErros.DATABASES_ERROR
+      });
+
+      
+      res.status(500).json({ status: "error", error: customError.message });
+    } else {
+      console.log(err);
+      res.status(500).json({ status: "error", error: "Error interno del servidor" });
+    }
   }
+
 };
+
+export const addProductController = async (req, res) => {
+  let { title, description, price, code, category, stock, thumbnail } = req.body
+
+  const product = { title, description, price, code, category, stock, thumbnail }
+
+  if (!title || !description || !price || !code || !category || !stock || !thumbnail) {
+
+      const error = CustomError.createError({
+          name: "ERROR EN LA CREACIÓN DEL PRODUCTO",
+          cause: generateErrorInfo(product),
+          message: "El producto no se pudo crear debido a que faltan propiedades.",
+          code: EErros.INVALID_TYPES_ERROR
+      })
+
+      return res.status(400).send(error.cause)
+  } else {
+
+      const result = await ProductService.create(product)
+      if (result.statusCode === 500) {
+          const error = CustomError.createError({
+              name: "ERROR EN LA CREACIÓN DEL PRODUCTO",
+              cause: generateErrorInfo(product),
+              message: `El producto no se pudo crear debido a que el codigo "${code}" ya existe`,
+              code: EErros.PRODUCT_CODE
+          })
+          return res.status(result.statusCode).send(error.message)
+      }
+      res.status(result.statusCode).send(result.response.payload)
+  }
+}
 
 export const deleteProductByIdController = async (req, res) => {
   try {
