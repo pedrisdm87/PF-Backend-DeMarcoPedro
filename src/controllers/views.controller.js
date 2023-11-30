@@ -3,6 +3,10 @@ import { getProductsFromCart } from "./cart.controller.js"
 import * as cartDAO from '../dao/cart.dao.js';
 import config from "../config/config.js"
 import { CartService } from "../services/services.js";
+import logger from "../logger.js";
+
+
+
 
 export const getProductsViewRouterController = async (req, res) => {
     const result = await getProducts(req, res)
@@ -19,7 +23,7 @@ export const getProductsViewRouterController = async (req, res) => {
             totalPages.push({ page: index, link })
         }
         const user = req.session.user
-        console.log(user)
+        logger.info(user)
         res.render('home', {
             user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
@@ -47,14 +51,14 @@ export const cartViewRouterController = async (req, res) => {
     try {
         const id = req.params.cid
         const result = await CartService.getCartById(id);
-        console.log(result)
+        logger.info(result)
         if (!result) {
             return res.status(500).send({ status: 'error', error: 'Internal Server Error' });
         } else {
             res.render('productsFromCart', { cart: result });
         }
     } catch (err) {
-        console.error(err);
+      logger.error(err);
         return res.status(500).send({ status: 'error', error: 'Internal Server Error' });
     }
 }

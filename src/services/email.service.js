@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import config from '../config/config.js';
 import Mailgen from 'mailgen';
+import logger from '../logger.js';
 
 const getbill = async (destinatario, ticket) => {
   try {
@@ -22,7 +23,7 @@ const getbill = async (destinatario, ticket) => {
       },
     });
 
-    console.log('ticket dentro del service', ticket)
+    logger.info('ticket dentro del service', ticket)
      
     const totalAmount = ticket.products.reduce((total, product) => {
       return total + product.price * product.quantity;

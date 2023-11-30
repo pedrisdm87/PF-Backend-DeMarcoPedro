@@ -5,6 +5,7 @@ import { createHash, isValidPassword } from "../utils.js"
 import userModel from "../dao/models/user.model.js"
 import cartModel from "../dao/models/cart.model.js"
 import config from "./config.js"
+import logger from "../logger.js"
 
 
 
@@ -64,7 +65,7 @@ const initializePassport = () => {
         clientSecret: config.github.clientSecret,
         callbackURL: config.github.callbackURL
     }, async(accessToken, refreshToken, profile, done) =>{
-        console.log(profile)
+        logger.info(profile)
         try{
             const cartForNewUser = await cartModel.create({})
             const user = await userModel.findOne({email: profile._json.email})

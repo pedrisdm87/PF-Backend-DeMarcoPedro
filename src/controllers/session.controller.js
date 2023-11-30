@@ -1,5 +1,6 @@
 import UserModel from "../dao/models/user.model.js"
 import passport from "passport";
+import logger from "../logger.js";
 
 
 export const registerController = async (req, res) => {
@@ -36,7 +37,7 @@ export const registerController2 = async (req, res) => {
 export const logoutController = async (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.log(err);
+            logger.error(err);
             res.status(500).render('errors/base', { error: err });
         } else {
             res.redirect('/');
@@ -45,7 +46,7 @@ export const logoutController = async (req, res) => {
 };
 
 export const loginGithubController = async(req, res) => {
-    console.log('Callback: ', req.user)
+    logger.info('Callback: ', req.user)
     req.session.user = req.user
     res.redirect('/products')
 }

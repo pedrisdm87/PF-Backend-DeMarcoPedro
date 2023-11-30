@@ -12,6 +12,7 @@ export const chatController = async (req, res) =>{
 
 // chatController.js
 import * as chatDao from "../dao/chat.dao.js"
+import logger from "../logger.js";
 
 export const chatController = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ export const chatController = async (req, res) => {
 
     res.render('chat', { messages, user });
   } catch (error) {
-        console.error("Error en el controlador de chat:", error);
+    logger.error("Error en el controlador de chat:", error);
     res.status(500).send("Error interno del servidor");
   }
 };

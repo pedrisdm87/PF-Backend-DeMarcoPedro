@@ -25,5 +25,10 @@ export default {
         checkoutSmsSid: process.env.TWILIO_ACCOUNT_SID,
         checkoutSmsToken: process.env.TWILIO_AUTH_TOKEN,
         checkoutNumero: process.env.TWILIO_PHONE_NUMBER
+    },
+    enviroment:{
+        enviromentDev: process.env.ENVIROMENT_DEV,
+        enviromentProd: process.env.ENVIROMENT_PROD
     }
+
 }

@@ -1,18 +1,19 @@
 import EErros from '../services/errors/enums.js';
+import logger from '../logger.js';
 
 export default (error, req, res, next) => {
-    console.log('middleware ERROR')
-    console.log(error)
+    logger.error('middleware ERROR')
+    logger.info(error)
     switch (error.code) {
         case EErros.INVALID_TYPES_ERROR:
-            console.log('ERROR controlado')
+            logger.error('ERROR controlado')
             res.status(400).send({ status: 'error', error: error.case })
             break;
         case EErros.PRODUCT_CODE:
-            console.log('ERROR controlado')
+            logger.error('ERROR controlado')
             res.status(400).send({ status: 'error', error: error.case })
         default:
-            console.log('ERROR SIN CONTROLAR')
+            logger.error('ERROR SIN CONTROLAR')
             res.status(error.status).send({ status: 'error', error: 'Unhandled error' })
             break;
     }

@@ -17,6 +17,8 @@ import config from './config/config.js'
 import { privateRoutes, publicRoutes } from "../src/middlewares/auth.middleware.js"
 import mockingRouter from './routers/mocking.router.js'
 import errorHandler from './middlewares/errors.js'
+import logger from './logger.js'
+import loggerTestRouter from './routers/loggerTest.router.js'
 
 
 const app = express()
@@ -60,8 +62,8 @@ try {
         dbName: config.mongo.dbName,
         useUnifiedTopology: true
     })
-    console.log('DB connected!')
-    const server = app.listen(config.apiserver.port, () => console.log('Server Up'))
+    logger.info('DB connected!')
+    const server = app.listen(config.apiserver.port, () => logger.info('Server Up'))
     const io = new Server(server)
     app.use((req, res, next) => {
         req.io = io
@@ -78,6 +80,7 @@ try {
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)
     app.use('/mockingproducts', mockingRouter)
+    app.use('/loggerTest', loggerTestRouter)
     app.use(errorHandler)
     //app.use('/checkout', checkoutRouter)
     
@@ -86,7 +89,7 @@ try {
 
     Sockets(io)
 } catch(err) {
-    console.log('Cannot connect to DB :(  ==> ', err.message)
+    logger.info('Cannot connect to DB :(  ==> ', err.message)
     process.exit(-1)
 }
 

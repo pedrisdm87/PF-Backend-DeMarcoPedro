@@ -4,6 +4,9 @@ import { ProductService } from "../services/services.js";
 import CustomError from '../services/errors/custom_error.js'
 import EErros from '../services/errors/enums.js'
 import { generateErrorInfo, generateErrorInfoTwo } from '../services/errors/description.js'
+import logger from "../logger.js";
+
+
 
 
 export const getProducts = async (req, res) => {
@@ -82,7 +85,7 @@ export const getProductsbyIDController = async (req, res) => {
       
       res.status(500).json({ status: "error", error: customError.message });
     } else {
-      console.log(err);
+      logger.error(err);
       res.status(500).json({ status: "error", error: "Error interno del servidor" });
     }
   }
