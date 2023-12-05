@@ -6,7 +6,10 @@ const productDAO = {
 getProductsFromDB : async (filterOptions, paginateOptions) => {
   try {
     const result = await productModel.paginate(filterOptions, paginateOptions);
-    return {
+    return result;
+  } catch (err) {
+    throw err; 
+/*    return {
       statusCode: 200,
       response: {
           status: 'success', payload: result
@@ -19,7 +22,7 @@ getProductsFromDB : async (filterOptions, paginateOptions) => {
       response: {
           status: 'error', error: error.message
       }
-  }
+  }*/
 }
 },
 

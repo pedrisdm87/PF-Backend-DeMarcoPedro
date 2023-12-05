@@ -23,7 +23,7 @@ const customWinstonLevels = {
 winston.addColors(customWinstonLevels.colors)
 
 const createLogger = env => {
-    if (env === config.enviroment.enviromentDev) { 
+    if (env === config.enviroment.enviromentProd) { 
         return winston.createLogger({
             levels: customWinstonLevels.levels,
             transports: [
