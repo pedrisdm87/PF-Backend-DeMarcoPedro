@@ -29,7 +29,10 @@ const createLogger = env => {
             transports: [
                 new  winston.transports.Console({
                     level: 'debug',
-                    format: winston.format.json()
+                    format: winston.format.combine(
+                    winston.format.json(),
+                    winston.format.colorize()
+                    )
                 })  
             ]
         })
