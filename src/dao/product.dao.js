@@ -9,20 +9,6 @@ getProductsFromDB : async (filterOptions, paginateOptions) => {
     return result;
   } catch (err) {
     throw err; 
-/*    return {
-      statusCode: 200,
-      response: {
-          status: 'success', payload: result
-      }
-  }
-
-} catch (error) {
-  return {
-      statusCode: 500,
-      response: {
-          status: 'error', error: error.message
-      }
-  }*/
 }
 },
 
@@ -35,16 +21,9 @@ getProductByIDFromDB : async (id) => {
       statusCode: 404,
       response: { status: 'error', error: 'Product does not exists' }
   }
-  return {
-      statusCode: 200,
-      response: { status: 'success', payload: result }
-  }
-} catch (error) {
-
-  return {
-      statusCode: 500,
-      response: { status: 'success', error: error.message }
-  }
+  return result;
+  } catch (err) {
+    throw err;
 }
 },
 
@@ -57,15 +36,9 @@ deleteProductByIDFromDB : async (id) => {
       statusCode: 400,
       response: { status: 'error', error: 'The product could not be deleted' }
   }
-  return {
-      statusCode: 200,
-      response: { status: 'success', payload: result }
-  }
-} catch (err) {
-  return {
-      statusCode: 500,
-      response: { status: 'error', error: err.message }
-  }
+  return result;
+  } catch (err) {
+    throw err;
 }
 },
 
@@ -79,15 +52,9 @@ updateProductInDB : async (id, data) => {
       statusCode: 400,
       response: { status: 'error', error: 'The product could not be updated' }
   }
-  return {
-      statusCode: 200,
-      response: { status: 'success', payload: result }
-  }
-} catch (err) {
-  return {
-      statusCode: 500,
-      response: { status: 'success', error: err.message }
-  }
+  return result;
+  } catch (err) {
+    throw err;
 }
 },
 
@@ -99,15 +66,9 @@ createProductInDB : async (productData) => {
       statusCode: 400,
       response: { status: 'error', error: 'The product could not be added' }
   }
-  return {
-      statusCode: 201,
-      response: { status: 'success', payload: result }
-  }
-} catch (err) {
-  return {
-      statusCode: 500,
-      response: { status: 'error', error: err.message }
-  }
+  return result;
+  } catch (err) {
+    throw err;
 }
 },
 
