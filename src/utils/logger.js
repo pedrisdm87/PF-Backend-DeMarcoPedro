@@ -23,17 +23,26 @@ const customWinstonLevels = {
 winston.addColors(customWinstonLevels.colors)
 
 const createLogger = env => {
-    if (env === config.enviroment.enviromentProd) { 
+    if (env === 'PROD') { 
         return winston.createLogger({
             levels: customWinstonLevels.levels,
             transports: [
                 new  winston.transports.Console({
-                    level: 'debug',
+                    level: 'info',
                     format: winston.format.combine(
                     winston.format.json(),
-                    winston.format.colorize()
+                    winston.format.colorize(),
+                    winston.format.timestamp()
                     )
                 }),
+                new winston.transports.File({
+                    filename: 'errors.log',
+                    level: 'error',
+                    format: winston.format.combine(
+                        winston.format.timestamp(),
+                        winston.format.json()
+                    )
+                }) 
                 
             ]
         })
@@ -41,9 +50,8 @@ const createLogger = env => {
         return winston.createLogger({
             levels: customWinstonLevels.levels,
             transports: [
-                new winston.transports.File({
-                    filename: 'errors.log',
-                    level: 'info',
+                new winston.transports.Console({
+                    level: 'debug',
                     format: winston.format.combine(
                         winston.format.timestamp(),
                         winston.format.colorize(),
@@ -55,6 +63,7 @@ const createLogger = env => {
     }
 }
 
-const logger = createLogger(process.env.ENVIRONMENT)
+const logger = createLogger(config.enviroment.Prod) // Or 'Dev' 
+
 
 export default logger

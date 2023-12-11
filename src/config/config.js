@@ -27,8 +27,8 @@ export default {
         checkoutNumero: process.env.TWILIO_PHONE_NUMBER
     },
     enviroment:{
-        enviromentDev: process.env.ENVIROMENT_DEV,
-        enviromentProd: process.env.ENVIROMENT_PROD
+        Dev: process.env.ENVIROMENT_DEV,
+        Prod: process.env.ENVIROMENT_PROD
     }
 
 }
