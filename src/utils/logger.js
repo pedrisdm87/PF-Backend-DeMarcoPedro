@@ -1,14 +1,14 @@
 import winston from 'winston'
-import config from '../src/config/config.js'
+import config from '../config/config.js'
 
 const customWinstonLevels = {
     levels: {
-        debug: 0,
-        http: 1,
-        info: 2,
-        warning: 3,
-        error: 4,
-        fatal: 5
+        fatal : 0,
+        error: 1,
+        warning: 2,
+        info: 3,
+        http: 4,
+        debug: 5
     },
     colors: {
         debug: 'white',
@@ -33,7 +33,8 @@ const createLogger = env => {
                     winston.format.json(),
                     winston.format.colorize()
                     )
-                })  
+                }),
+                
             ]
         })
     } else {
