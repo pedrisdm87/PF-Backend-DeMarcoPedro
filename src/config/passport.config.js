@@ -5,7 +5,7 @@ import { createHash, isValidPassword } from "../utils/utils.js"
 import userModel from "../dao/models/user.model.js"
 import cartModel from "../dao/models/cart.model.js"
 import config from "./config.js"
-import logger from "../logger.js"
+import logger from '../utils/logger.js'
 
 
 

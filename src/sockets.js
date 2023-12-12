@@ -1,5 +1,5 @@
 import messageModel from './dao/models/message.model.js'
-import logger from './logger.js'
+import logger from '../src/utils/utils.js'
 
 export default (io) => {
     io.on("connection", async socket => {

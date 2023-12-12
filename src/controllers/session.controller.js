@@ -1,6 +1,6 @@
 import UserModel from "../dao/models/user.model.js"
 import passport from "passport";
-import logger from "../logger.js";
+import logger from "../utils/logger.js";
 
 
 export const registerController = async (req, res) => {

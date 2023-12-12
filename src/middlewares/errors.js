@@ -1,5 +1,5 @@
 import EErros from '../services/errors/enums.js';
-import logger from '../logger.js';
+import logger from '../utils/logger.js';
 
 export default (error, req, res, next) => {
     logger.error('middleware ERROR')

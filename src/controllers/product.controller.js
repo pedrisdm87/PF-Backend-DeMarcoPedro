@@ -4,7 +4,7 @@ import { ProductService } from "../services/services.js";
 import CustomError from '../services/errors/custom_error.js'
 import EErros from '../services/errors/enums.js'
 import { generateErrorInfo, generateErrorInfoTwo } from '../services/errors/description.js'
-import logger from "../logger.js";
+import logger from "../utils/logger.js";
 
 
 

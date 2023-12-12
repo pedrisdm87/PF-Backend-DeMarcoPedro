@@ -3,7 +3,7 @@ import { getProductsFromCart } from "./cart.controller.js"
 import * as cartDAO from '../dao/cart.dao.js';
 import config from "../config/config.js"
 import { CartService } from "../services/services.js";
-import logger from "../logger.js";
+import logger from "../utils/logger.js";
 
 
 

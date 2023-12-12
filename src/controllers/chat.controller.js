@@ -12,7 +12,7 @@ export const chatController = async (req, res) =>{
 
 // chatController.js
 import * as chatDao from "../dao/chat.dao.js"
-import logger from "../logger.js";
+import logger from "../utils/logger.js";
 
 export const chatController = async (req, res) => {
   try {

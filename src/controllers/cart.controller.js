@@ -2,7 +2,7 @@ import productModel from '../dao/models/product.model.js'
 import cartModel from "../dao/models/cart.model.js"
 import { CartService, ProductService } from '../services/services.js'
 import  ticketModel  from '../dao/models/ticket.model.js'
-import generarCodigo from '../utils.js'
+import generarCodigo from '../utils/utils.js'
 import getbill from '../services/email.service.js'
 import { TicketService } from '../services/services.js'
 

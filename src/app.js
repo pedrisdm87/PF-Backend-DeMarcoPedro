@@ -17,7 +17,7 @@ import config from './config/config.js'
 import { privateRoutes, publicRoutes } from "../src/middlewares/auth.middleware.js"
 import mockingRouter from './routers/mocking.router.js'
 import errorHandler from './middlewares/errors.js'
-import logger from './logger.js'
+import logger from '../src/utils/logger.js'
 import loggerTestRouter from './routers/loggerTest.router.js'
 
 
