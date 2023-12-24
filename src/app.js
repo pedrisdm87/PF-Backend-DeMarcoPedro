@@ -19,12 +19,30 @@ import mockingRouter from './routers/mocking.router.js'
 import errorHandler from './middlewares/errors.js'
 import logger from '../src/utils/logger.js'
 import loggerTestRouter from './routers/loggerTest.router.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
+
 
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 //app.use(express.static('./src/public'))
+
+const swaggerOptions = {
+  definition: {
+      openapi: "3.0.1",
+      info:{
+        title: 'Movies',
+        description: 'Portal para compra de entradas de cine'
+      }
+  },
+  apis:['./docs/**/*.yaml']
+}
+
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
 app.use(session ({
