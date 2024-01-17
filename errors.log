@@ -1,14 +1,2 @@
-[34minfo[39m: [object Object] {"timestamp":"2023-12-04T23:53:55.497Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:11:09.618Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:11:12.792Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:11:15.595Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:18:50.780Z"}
-[34minfo[39m: DB connected! {"timestamp":"2023-12-05T01:22:01.445Z"}
-[34minfo[39m: Server Up {"timestamp":"2023-12-05T01:22:01.451Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:22:07.657Z"}
-[34minfo[39m: DB connected! {"timestamp":"2023-12-05T01:24:32.604Z"}
-[34minfo[39m: Server Up {"timestamp":"2023-12-05T01:24:32.610Z"}
-[34minfo[39m: [object Object] {"timestamp":"2023-12-05T01:24:42.150Z"}
-[34minfo[39m: DB connected! {"timestamp":"2023-12-05T01:30:24.200Z"}
-[34minfo[39m: DB connected! {"timestamp":"2023-12-08T19:36:41.545Z"}
-[34minfo[39m: Server Up {"timestamp":"2023-12-08T19:36:41.551Z"}
+{"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T14:12:14.704Z"}
+{"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T14:13:28.122Z"}

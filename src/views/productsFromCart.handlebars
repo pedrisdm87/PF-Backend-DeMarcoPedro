@@ -63,6 +63,7 @@ const checkout = async () => {
     const response = await fetch(`/api/carts/{{cart._id}}/purchase`, {
       method: "GET",
     });
+    console.log(response)
     const result = await response.json();
 
     if (result.status === 'error') {
@@ -75,7 +76,7 @@ const checkout = async () => {
       return ticketDetails;  
     }
   } catch (error) {
-    alert('Ocurrió un error: ' + error);
+    alert('Ocurrió un error: ' + error); // ACA ESTA EL ERROR
     throw error;  
   }
 };
@@ -96,7 +97,7 @@ const checkoutCorreo = () => {
     .catch(error => alert('Ocurrió un error: ' + error));
 };
 
-const checkoutSms = async (phoneNumber) => {
+/*const checkoutSms = async (phoneNumber) => {
   try {
     const response = await fetch('/checkout/checkoutSms', {
       method: 'POST',
@@ -118,7 +119,7 @@ const checkoutSms = async (phoneNumber) => {
     
   }
 };
-
+*/
 
 const botonCompra = document.getElementById('botonCompra');
 

@@ -5,6 +5,8 @@ import  ticketModel  from '../dao/models/ticket.model.js'
 import generarCodigo from '../utils/utils.js'
 import getbill from '../services/email.service.js'
 import { TicketService } from '../services/services.js'
+import logger from '../utils/logger.js'
+
 
 
 
@@ -184,7 +186,7 @@ export const deleteCartController = async (req, res) => {
 }
 
 
-export const purchaseController = async(req, res) => {
+/* export const purchaseController = async(req, res) => {
     const cid = req.params.cid
     
     try {
@@ -242,4 +244,71 @@ export const purchaseController = async(req, res) => {
     } catch (err) {
         res.status(500).json({ status: 'error', error: err.message })
     }
-}
+}*/
+
+export const purchaseController = async(req, res) => {
+    try {
+      const cid = req.params.cid
+      const cartToPurchase = await CartService.getCartById(cid)
+  
+      if (cartToPurchase === null) {
+        return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` })
+      }
+  
+      let productsToTicket = []
+      let productsAfterPurchse = cartToPurchase.products
+      let amount = 0
+  
+      for (let index = 0; index < cartToPurchase.products.length; index++) {
+        const productToPurchase = await ProductService.getProductByIDFromDB(cartToPurchase.products[index].product)
+  
+        if (productToPurchase === null) {
+          return res.status(400).json({ status: 'error', error: `Product with id=${cartToPurchase.products[index].product} does not exist. We cannot purchase this product` })
+        }
+        
+        if (cartToPurchase.products[index].quantity <= productToPurchase.stock) {
+          
+           //actualizamos el stock del producto que se está comprando
+           productToPurchase.stock -= cartToPurchase.products[index].quantity
+          await ProductService.updateProductInDB(productToPurchase._id, { stock: productToPurchase.stock })
+  
+          //eliminamos (del carrito) los productos que se han comparado (en memoria)
+          productsAfterPurchse = productsAfterPurchse.filter(item => item.product.toString() !== cartToPurchase.products[index].product.toString())
+  
+          //calculamos el amount (total del ticket)
+          amount += (productToPurchase.price * cartToPurchase.products[index].quantity)
+  
+          //colocamos el producto en el Ticket (en memoria)
+          productsToTicket.push({ product: productToPurchase._id, price: productToPurchase.price, quantity: cartToPurchase.products[index].quantity})
+        }
+        
+      }
+       //eliminamos (del carrito) los productos que se han comparado
+       await CartService.updateCart(cid, {
+        products: productsAfterPurchse}, {
+          returnDocument: 'after' })
+  
+          //creamos el Ticket
+          const ticket = await TicketService.createTicket({
+            code: generarCodigo(10), 
+            products: productsToTicket,
+            amount,
+            purchaser: req.session.user.email 
+        })
+          // Carrito despues de la compra
+        //cart.products = productsInCartAfterBuy CORREGIR EL CART
+       // await cart.save()
+
+        // Envío de correo electrónico después de guardar el carrito
+        const emailResult = await getbill(req.session.user.email, ticket)
+        console.log('ticket.products', ticket.products)
+        if (emailResult.success) {
+         res.status(200).json({ status: 'success', payload: ticket, message: emailResult.message })
+        } else {
+         res.status(500).json({ status: 'error', error: emailResult.error })
+        }
+    } catch (err) {
+        logger.error('Error al intentar termianar la compra')
+        res.status(500).json({ status: 'error', error: err.message })
+    }
+  }
