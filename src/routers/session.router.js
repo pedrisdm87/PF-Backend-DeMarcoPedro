@@ -1,4 +1,4 @@
-import { Router } from "express";
+/* import { Router } from "express";
 import UserModel from "../dao/models/user.model.js"
 import passport from "passport";
 import { registerController, loginGithubController, failRegisterController, loginController, authenticationController, failLoginController, registerController2, logoutController} from "../controllers/session.controller.js"
@@ -37,5 +37,24 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/a
 //API para login
 
 router.post('/login', passport.authenticate('login', {failureRedirect: '/api/sessions/failLogin'}), authenticationController)
+
+export default router */
+
+import { Router } from "express"
+import sessionController from "../controllers/session.controller.js"
+
+const router = Router()
+
+router.post('/register', sessionController.register)
+router.get('/failRegister', sessionController.failRegister)
+
+router.get('/login', sessionController.loginPage)
+router.post('/login', sessionController.login)
+router.get('/failLogin', sessionController.failLogin)
+
+router.get('/logout', sessionController.logout)
+
+router.get('/github', sessionController.github)
+router.get('/githubcallback', sessionController.githubCallback)
 
 export default router
