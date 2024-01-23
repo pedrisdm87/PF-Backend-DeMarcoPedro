@@ -83,7 +83,7 @@ const checkout = async () => {
 
 
 const checkoutCorreo = () => {
-  fetch(`/checkout/checkoutCorreo`, {
+  fetch(`/checkoutCorreo`, {
     method: "POST",
   })
     .then((result) => result.json())
@@ -97,44 +97,17 @@ const checkoutCorreo = () => {
     .catch(error => alert('Ocurrió un error: ' + error));
 };
 
-/*const checkoutSms = async (phoneNumber) => {
-  try {
-    const response = await fetch('/checkout/checkoutSms', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ phoneNumber }),
-    });
-
-    const result = await response.json();
-
-    if (result.status === 'error') {
-      throw new Error(result.error);
-    } else {
-      console.log('Mensaje enviado con éxito:', result.message);
-    }
-  } catch (error) {
-    console.error('Error al enviar el mensaje:', error);
-    
-  }
-};
-*/
-
 const botonCompra = document.getElementById('botonCompra');
 
 botonCompra.addEventListener('click', async (event) => {
   event.preventDefault();
 
   try {
-
-await checkoutCorreo();
-
     const ticketDetails = await checkout();
 
-  
-    
-  const phoneNumber = await Swal.fire({
+    await checkoutCorreo();
+
+    const swalResult = await Swal.fire({
       title: '¡Compra realizada con éxito!',
       html: `
         <div style="text-align: left;">
@@ -155,25 +128,25 @@ await checkoutCorreo();
       icon: 'success',
       showCloseButton: true,
       showConfirmButton: false,
-      input: 'text',
-      inputLabel: 'Por favor, ingrese su número de teléfono:',
-      inputValidator: (value) => {
-        if (!value) {
-          return '¡El número de teléfono es obligatorio!';
-        }
-      },
     });
 
-   await checkoutSms({ phoneNumber });
+    // Agregar un listener para el evento close
+    if (swalResult.isDismissed && swalResult.dismiss === Swal.DismissReason.close) {
+      
+      location.reload(); // Esto recarga la página
+    }
 
-  } catch (error) 
-    {Swal.fire({
+  } catch (error) {
+    Swal.fire({
       title: 'Error',
       text: 'Ocurrió un error durante la compra. Por favor, inténtalo de nuevo.',
       icon: 'error',
     });
   }
 });
+
+
+
 </script>
 
 

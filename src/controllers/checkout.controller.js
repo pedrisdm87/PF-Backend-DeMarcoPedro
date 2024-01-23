@@ -83,7 +83,7 @@ import config from '../config/config.js';
 import Mailgen from 'mailgen';
 import logger from '../utils/logger.js';
 
-const getbill = async (destinatario, ticket) => {
+export const getbill = async (destinatario, ticket) => {
   try {
     let configMail = {
       service: 'gmail',
