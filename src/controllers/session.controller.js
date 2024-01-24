@@ -115,5 +115,65 @@ sessionController.githubCallback = async (req, res) => {
 };
 
 
+///////////////////////////////////////////////////////
+sessionController.forgetPass =  async (req, res) => {
+  const email = req.body.email
+    const user = await UserService.findUser({ email })
+    if (!user) {
+        return res.status(404).json({ status: 'error', error: 'User not found' })
+    }
+    const token = generateRandomCode(16);
+    await PassResetService.createToken({ email, token })
+  //aca llamo al mail service
+  const emailResult = await restorePasswordMail(email, token)
+  if (emailResult.success) {
+    res.status(200).json({ status: 'success', message: emailResult.message })
+   } else {
+    res.status(500).json({ status: 'error', error: emailResult.error })
+   }
+
+
+}
+
+sessionController.verifyToken = async (req, res) => {
+  const userPassword = await PassResetService.findToken({ token: req.params.token })
+  if (!userPassword) {
+      return res.status(404).json({ status: 'error', error: 'Token no válido / El token ha expirado' })
+  }
+  const user = userPassword.email
+  res.render('sessions/resetPassword', { user })
+}
+
+sessionController.resetPass = async (req, res) => {
+  try {
+      const user = await UserService.findUser({ email: req.params.user })
+    //console.log('user en reset', user)
+      const newPassword = req.body.newPassword
+      //comparacion pass
+      const passwordMatch = bcrypt.compareSync(newPassword, user.password)
+      if(passwordMatch){
+        return res.status(404).json({ status: 'error', message: 'Contraseña igual a la anterior'})
+      }
+      await UserService.findAndUpdate(user._id, { password: createHash(newPassword) })
+      res.json({ status: 'success', message: 'Se ha creado una nueva contraseña' })
+      await PassResetService.deleteToken({ email: req.params.user })
+  } catch(err) {
+      res.json({ status: 'error', error: err.message })
+  }
+}
+
+sessionController.exchangeRole = async (req, res) => {
+  try {
+      const id = req.params.uid
+      const user = await UserService.findById(id)
+      console.log('info de user',user)
+      await UserService.findAndUpdate(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
+      res.render('sessions/profile')
+      //res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
+  } catch(err) {
+      res.json({ status: 'error', error: err.message })
+  }
+}
+
 
 export default sessionController;

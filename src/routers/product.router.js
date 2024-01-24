@@ -6,14 +6,14 @@ import { handlePolicies } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/", handlePolicies(['USER', 'ADMIN']), productsResponse)
+router.get("/", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), productsResponse)
 
-router.get("/:pid", handlePolicies(['USER', 'ADMIN']), getProductsbyIDController)
+router.get("/:pid", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), getProductsbyIDController)
 
-router.post("/", handlePolicies(['ADMIN']), createProductOnDBController) 
+router.post("/", handlePolicies(['ADMIN', 'PREMIUM']), createProductOnDBController) 
 
-router.put("/:pid", handlePolicies(['ADMIN']), updateProductByIdController)
+router.put("/:pid", handlePolicies(['ADMIN', 'PREMIUM']), updateProductByIdController)
 
-router.delete("/:pid", handlePolicies(['ADMIN']), deleteProductByIdController)
+router.delete("/:pid", handlePolicies(['ADMIN', 'PREMIUM']), deleteProductByIdController)
 
 export default router;
