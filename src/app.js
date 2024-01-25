@@ -93,7 +93,7 @@ try {
     app.use('/api/sessions', sessionRouter)
     app.use('/api/products', productsRouter)
     app.use('/api/carts', cartsRouter)
-    app.use('/products', /*privateRoutes,*/ viewsRouter)
+    app.use('/products', viewsRouter)
     app.use('/productsFromCart', viewsRouter)
     app.use('/carts', viewsRouter)
     app.use("/chat", chatRouter)

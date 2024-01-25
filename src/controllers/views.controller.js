@@ -4,6 +4,8 @@ import * as cartDAO from '../dao/cart.dao.js';
 import config from "../config/config.js"
 import { CartService } from "../services/services.js";
 import logger from "../utils/logger.js";
+import { ProductService } from "../services/services.js";
+import { publicRoutes } from "../middlewares/auth.middleware.js";
 
 
 
@@ -37,7 +39,7 @@ export const getProductsViewRouterController = async (req, res) => {
         res.status(result.statusCode).json({ status: 'error', error: result.response.error })
     }
 }
-
+/*
 export const realTimeProductsVRController = async (req, res) => {
     const result = await getProducts(req, res)
     if (result.statusCode === 200) {
@@ -45,7 +47,18 @@ export const realTimeProductsVRController = async (req, res) => {
     } else {
         res.status(result.statusCode).json({ status: 'error', error: result.response.error })
     }
-}
+}*/
+
+
+export const realTimeProductsVRController= (publicRoutes, async (req, res) => {
+    try {
+        const result = await ProductService.getProductsFromDB()
+        res.render('realTimeProducts', { products: result })
+    } catch (err) {
+        res.status(500).json({ status: 'error', error: err.message })
+    }
+})
+
 
 export const cartViewRouterController = async (req, res) => {
     try {
