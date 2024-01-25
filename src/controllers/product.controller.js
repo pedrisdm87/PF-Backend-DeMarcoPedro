@@ -186,7 +186,7 @@ export const createProductOnDBController = async (req, res) => {
 };
 
 export const productsResponse = async (req, res) => {
-  const result = await ProductService.getProducts(req, res);
+  const result = await ProductService.getProductsFromDB(req, res);
   res.status(result.statusCode).json(result.response);
 };
 

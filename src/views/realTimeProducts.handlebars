@@ -4,7 +4,7 @@
 <br>
 <br>
 <div class="container">
-  <h2 class="text-center mb-4">Real Time Products</h2>
+  <h2 class="text-center mb-4">Crear o Actualizar Productos</h2>
 
   <hr />
 
@@ -75,51 +75,34 @@
             required
           />
         </div>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            name="image"
+            id="thumbnail"
+            placeholder="Imagen"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            name="status"
+            id="status"
+            placeholder="True/False"
+            required
+          />
+        </div>
         <button
           type="submit"
           class="btn btn-success form-control fw-bold"
-          id="addProduct"
+          id="createProduct"
         >Add Movie</button>
       </form>
     </div>
-  </div>
-
-  <hr />
-
-  <table
-    class="table table-bordered table-striped table-hover mt-5 text-center"
-    id="productsTable"
-  >
-    <thead class="table-dark">
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Code</th>
-        <th>Category</th>
-        <th>Stock</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="tbody">
-      {{#each products}}
-        <tr>
-          <td>{{this.title}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.code}}</td>
-          <td>{{this.category}}</td>
-          <td>{{this.stock}}</td>
-          <td>
-            <button class="btn btn-danger" onclick="deleteProduct({{this.id}})">
-              ❌
-            </button>
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-  </div>
+  
   
 <style>
         body {
@@ -129,5 +112,43 @@
             background-attachment: fixed;
         }
     </style>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/index.js"></script>
+  
+
+  <script>
+
+document.getElementById('createProduct').addEventListener('click', () =>{
+    const product = {       
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        price: document.getElementById("price").value,
+        code: document.getElementById("code").value,
+        category: document.getElementById("category").value,
+        stock: document.getElementById("stock").value,
+        thumbnail: document.getElementById("thumbnail").value,
+        status: document.getElementById("status").value 
+        }
+
+     fetch("/api/products", {
+        method: "post",
+        body: JSON.stringify(product),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then (result => result.json())
+    .then (result => {
+        if (result.status === 'error') throw new Error(result.error)
+    })  
+    .then (() => fetch('/api/products'))
+    .then (result => result.json())
+    .then ( result => {
+        if ( result.status === 'error')throw new Error(result.error)
+        alert(`Nuevo producto agregado`)
+        window.location.href = '/products'
+    })
+    .catch(error => {
+        console.log (`Error en la subida de producto`)
+    } )
+})
+
+  </script>

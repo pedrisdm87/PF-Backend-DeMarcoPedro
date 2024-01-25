@@ -39,15 +39,6 @@ export const getProductsViewRouterController = async (req, res) => {
         res.status(result.statusCode).json({ status: 'error', error: result.response.error })
     }
 }
-/*
-export const realTimeProductsVRController = async (req, res) => {
-    const result = await getProducts(req, res)
-    if (result.statusCode === 200) {
-        res.render('realTimeProducts', { products: result.response.payload })
-    } else {
-        res.status(result.statusCode).json({ status: 'error', error: result.response.error })
-    }
-}*/
 
 
 export const realTimeProductsVRController= (publicRoutes, async (req, res) => {

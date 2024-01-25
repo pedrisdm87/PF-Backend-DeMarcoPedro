@@ -6,7 +6,7 @@
 <div class="container text-center mt-3">
     <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/current">{{user.email}}</a>) - Role: {{user.role}}</h2>
     <br>
-    <a href="/products/realTimeProducts" class="btn btn-success">Crear / Actualizar Producto</a> |<a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info"> Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
+    <a href="/products/realTimeProducts" class="btn btn-success">Crear / Actualizar Producto</a> | <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info"> Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
 </div>
 <hr />
 
@@ -28,6 +28,7 @@
                     <th>Categoría</th>
                     <th>Stock</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,6 +41,7 @@
                         <td>{{this.category}}</td>
                         <td>{{this.stock}}</td>
                         <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td> 
+                        <td><button class="btn btn-danger" onclick="deleteProduct('{{product._id}}')"> ❌ </button></td>
                      </tr>
                 {{/each}}
             </tbody>
@@ -87,6 +89,28 @@ function addProductToCart(cid, pid) {
     })
     .catch(err => alert(`Ocurrió un error: ${err}`));
 } 
+
+deleteProduct = (pid) => {
+    fetch(`/api/products/${pid}`, {
+        method: 'delete'
+        })
+       
+    .then(result => result.json())
+    .then(result => {
+        if (result.status === 'error') throw new Error(result.error)
+        alert(`El producto se borro de la base de datos!`)
+        window.location.href = '/products'
+    })
+    .catch(err => alert(`Ocurrió un error :(\n${err}`))
+}
+
+
+ /*
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(filteredFormData),
+        })*/
 
 function removeProductFromCart(cid, pid) {
   fetch(`/api/carts/${cid}/product/${pid}`, {
