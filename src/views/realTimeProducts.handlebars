@@ -128,27 +128,6 @@ document.getElementById('createProduct').addEventListener('click', () =>{
         status: document.getElementById("status").value 
         }
 
-     fetch("/api/products", {
-        method: "post",
-        body: JSON.stringify(product),
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    .then (result => result.json())
-    .then (result => {
-        if (result.status === 'error') throw new Error(result.error)
-    })  
-    .then (() => fetch('/api/products'))
-    .then (result => result.json())
-    .then ( result => {
-        if ( result.status === 'error')throw new Error(result.error)
-        alert(`Nuevo producto agregado`)
-        window.location.href = '/products'
-    })
-    .catch(error => {
-        console.log (`Error en la subida de producto`)
-    } )
-})
+     
 
   </script>
