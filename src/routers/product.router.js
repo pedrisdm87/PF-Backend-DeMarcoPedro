@@ -10,7 +10,7 @@ router.get("/", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), productsResponse)
 
 router.get("/:pid", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), getProductsbyIDController)
 
-router.post("/", handlePolicies(['ADMIN', 'PREMIUM']), createProductOnDBController) 
+router.post("/", handlePolicies(['ADMIN', 'PREMIUM', 'USER']), createProductOnDBController) 
 
 router.put("/:pid", handlePolicies(['ADMIN', 'PREMIUM']), updateProductByIdController)
 

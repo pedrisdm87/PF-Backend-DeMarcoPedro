@@ -7,127 +7,95 @@
   <h2 class="text-center mb-4">Crear o Actualizar Productos</h2>
 
   <hr />
-
+  <div>
+    <br>
+    <a href="/products" class="btn btn-primary">Products</a>
+    <br>
+    <br>
+  </div>
   <div class="card mb-5 col-md-6 offset-md-3">
     <div class="card-header bg-primary text-center text-white">
       <h5>Add Movies</h5>
+      <br>
     </div>
+
     <div class="card-body">
       <form id="form">
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="title"
-            id="title"
-            placeholder="Title"
-            required
-          />
+          <input type="text" class="form-control" name="title" id="title" placeholder="Title" required />
         </div>
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="description"
-            id="description"
-            placeholder="Description"
-            required
-          />
+          <input type="text" class="form-control" name="description" id="description" placeholder="Description"
+            required />
         </div>
         <div class="mb-3">
-          <input
-            type="number"
-            class="form-control"
-            name="price"
-            id="price"
-            step="0.01"
-            placeholder="Price"
-            required
-          />
+          <input type="number" class="form-control" name="price" id="price" step="0.01" placeholder="Price" required />
         </div>
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="code"
-            id="code"
-            placeholder="Code"
-            required
-          />
+          <input type="number" class="form-control" name="code" id="code" placeholder="Code" required />
         </div>
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="category"
-            id="category"
-            placeholder="Category"
-            required
-          />
+          <input type="text" class="form-control" name="category" id="category" placeholder="Category" required />
         </div>
         <div class="mb-3">
-          <input
-            type="number"
-            class="form-control"
-            name="stock"
-            id="stock"
-            placeholder="Stock"
-            required
-          />
+          <input type="number" class="form-control" name="stock" id="stock" placeholder="Stock" required />
         </div>
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="image"
-            id="thumbnail"
-            placeholder="Imagen"
-            required
-          />
+          <input type="text" class="form-control" name="image" id="thumbnail" placeholder="Imagen" required />
         </div>
         <div class="mb-3">
-          <input
-            type="text"
-            class="form-control"
-            name="status"
-            id="status"
-            placeholder="True/False"
-            required
-          />
+          <input type="boolean" class="form-control" name="status" id="status" placeholder="True/False" required />
         </div>
-        <button
-          type="submit"
-          class="btn btn-success form-control fw-bold"
-          id="createProduct"
-        >Add Movie</button>
+        <button type="button" class="btn btn-success form-control fw-bold" id="createProduct">Add Movie</button>
       </form>
     </div>
-  
-  
-<style>
-        body {
-            background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
+
+
+    <style>
+      body {
+        background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
     </style>
-  
 
-  <script>
 
-document.getElementById('createProduct').addEventListener('click', () =>{
-    const product = {       
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        price: document.getElementById("price").value,
-        code: document.getElementById("code").value,
-        category: document.getElementById("category").value,
-        stock: document.getElementById("stock").value,
-        thumbnail: document.getElementById("thumbnail").value,
-        status: document.getElementById("status").value 
+    <script>
+
+      document.getElementById('createProduct').addEventListener('click', () => {
+        const product = {
+          title: document.getElementById("title").value,
+          description: document.getElementById("description").value,
+          price: document.getElementById("price").value,
+          code: document.getElementById("code").value,
+          category: document.getElementById("category").value,
+          stock: document.getElementById("stock").value,
+          thumbnail: document.getElementById("thumbnail").value,
+          status: document.getElementById("status").value
         }
-
-     
-
-  </script>
+        //ruta que crea el producto
+        fetch("/api/products", {
+          method: "post",
+          body: JSON.stringify(product),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }) // promesa de un producto creado
+          .then(result => result.json()) // promesa de un producto transformado a JSON
+          .then(jsonData => {
+            if (jsonData.status === 'error') {
+              console.log("OK, redirection: " + jsonData.status)
+              throw new Error(data.error);
+            } else {
+              console.log("OK, redirection: " + jsonData.status)
+              // Si todo está bien, redirigimos y mostramos el alert
+              window.location.href = '/products'
+              alert(`Nuevo producto agregado`)
+            }
+          }) // promesa de un redirect y un alert, o un error
+          .catch(error => {
+            console.log(`Error en la subida de producto`, error)
+          })
+      })
+    </script>
