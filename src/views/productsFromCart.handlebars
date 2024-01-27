@@ -2,114 +2,116 @@
 <br>
 <br>
 <div class="container mt-5 text-center">
-<h2>Products from Cart</h2>
-<br>
-<br>
-<a href="/products" class="btn btn-primary">Products</a> | <a class="btn btn-warning" href="/api/carts/{{cart._id}}/purchase" id="botonCompra">Comprar</a> | <a href="/api/sessions/logout" class="btn btn-danger">Logout</a>
+  <h2>Products from Cart</h2>
+  <br>
+  <br>
+  <a href="/products" class="btn btn-primary">Products</a> | <a class="btn btn-warning"
+    href="/api/carts/{{cart._id}}/purchase" id="botonCompra">Comprar</a> | <a href="/api/sessions/logout"
+    class="btn btn-danger">Logout</a>
 </div>
 <br>
 
-    
+
 
 <br>
 <hr />
 <div class="table-responsive my-5 container">
-<table class="table table-bordered table-striped table-hover text-center">
+  <table class="table table-bordered table-striped table-hover text-center">
     <thead class="thead-dark ">
-        <tr>
-            <td><strong>Producto</strong></td>
-            <td><strong>Descripción</strong></td>
-            <td><strong>Precio</strong></td>
-            <td><strong>Código</strong></td>
-            <td><strong>Stock</strong></td>
-            <td><strong>Cantidad</strong></td>
-            <th></th>
-        </tr>
+      <tr>
+        <td><strong>Producto</strong></td>
+        <td><strong>Descripción</strong></td>
+        <td><strong>Precio</strong></td>
+        <td><strong>Código</strong></td>
+        <td><strong>Stock</strong></td>
+        <td><strong>Cantidad</strong></td>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
-        {{#each cart.products}}
-        <tr>
-            <td>{{this.product.title}}</td>
-            <td>{{this.product.description}}</td>
-            <td>{{this.product.price}}</td>
-            <td>{{this.product.code}}</td>
-            <td>{{this.product.stock}}</td>
-            <td>{{this.quantity}}</td>
-            <td> <button class="btn btn-danger" onclick="deleteProduct({{product._id}})">Borrar Producto</button>
-        </tr>
-        {{/each}}
+      {{#each cart.products}}
+      <tr>
+        <td>{{this.product.title}}</td>
+        <td>{{this.product.description}}</td>
+        <td>{{this.product.price}}</td>
+        <td>{{this.product.code}}</td>
+        <td>{{this.product.stock}}</td>
+        <td>{{this.quantity}}</td>
+        <td> <button class="btn btn-danger" onclick="deleteProduct('{{this.product._id}}')"> Borrar Producto </button></td>
+      </tr>
+      {{/each}}
     </tbody>
-</table>
+  </table>
 </div>
 
 <script>
 
-   const deleteProduct = (pid) => {
-    fetch(`/api/products/${pid}`, {
-        method: 'delete'
-        })
-        .then(result => result.json())
-        .then(result => {
-            if (result.status === 'error') throw new Error(result.error)
-            alert(`Producto eliminado con exito`)
-            window.location.href = '/products'
-        })
-        .catch(err => alert(`Ocurrió un error :(\n${err}`))
-}
-
-
-const checkout = async () => {
-  try {
-    const response = await fetch(`/api/carts/{{cart._id}}/purchase`, {
-      method: "GET",
-    });
-    console.log(response)
-    const result = await response.json();
-
-    if (result.status === 'error') {
-      throw new Error(result.error);
-    } else {
-      
-      const ticketDetails = result.payload;
-      console.log('Checkout con exito');
-     
-      return ticketDetails;  
-    }
-  } catch (error) {
-    alert('Ocurrió un error: ' + error); 
-    throw error;  
+  const deleteProduct = (pid) => {
+    fetch(`/api/carts/{{cart._id}}/product/${pid}`, {
+      method: 'delete'
+    })
+      .then(result => result.json())
+      .then(result => {
+        if (result.status === 'error') throw new Error(result.error)
+        alert(`Producto eliminado con exito`)
+        window.location.href = '/carts/{{cart._id}}'
+      })
+      .catch(err => alert(`Ocurrió un error :(\n${err}`))
   }
-};
 
 
-const checkoutCorreo = () => {
-  fetch(`/checkoutCorreo`, {
-    method: "POST",
-  })
-    .then((result) => result.json())
-    .then((result) => {
+  const checkout = async () => {
+    try {
+      const response = await fetch(`/api/carts/{{cart._id}}/purchase`, {
+        method: "GET",
+      });
+      console.log(response)
+      const result = await response.json();
+
       if (result.status === 'error') {
         throw new Error(result.error);
       } else {
-        console.log('Su compra fue enviada por correo');
+
+        const ticketDetails = result.payload;
+        console.log('Checkout con exito');
+
+        return ticketDetails;
       }
+    } catch (error) {
+      alert('Ocurrió un error: ' + error);
+      throw error;
+    }
+  };
+
+
+  const checkoutCorreo = () => {
+    fetch(`/checkoutCorreo`, {
+      method: "POST",
     })
-    .catch(error => alert('Ocurrió un error: ' + error));
-};
+      .then((result) => result.json())
+      .then((result) => {
+        if (result.status === 'error') {
+          throw new Error(result.error);
+        } else {
+          console.log('Su compra fue enviada por correo');
+        }
+      })
+      .catch(error => alert('Ocurrió un error: ' + error));
+  };
 
-const botonCompra = document.getElementById('botonCompra');
+  const botonCompra = document.getElementById('botonCompra');
 
-botonCompra.addEventListener('click', async (event) => {
-  event.preventDefault();
+  botonCompra.addEventListener('click', async (event) => {
+    event.preventDefault();
 
-  try {
-    const ticketDetails = await checkout();
+    try {
+      const ticketDetails = await checkout();
 
-    await checkoutCorreo();
+      await checkoutCorreo();
 
-    const swalResult = await Swal.fire({
-      title: '¡Compra realizada con éxito!',
-      html: `
+      const swalResult = await Swal.fire({
+        title: '¡Compra realizada con éxito!',
+        html: `
         <div style="text-align: left;">
           <p style="font-size: 16px;">Detalles de la compra:</p>
           <p><strong>Código:</strong> ${ticketDetails.code}</p>
@@ -125,25 +127,25 @@ botonCompra.addEventListener('click', async (event) => {
           <p><strong>Comprador:</strong> ${ticketDetails.purchaser}</p>
           <p><strong>Fecha y hora de compra:</strong> ${new Date(ticketDetails.purchase_datetime).toLocaleString()}</p>
         </div>`,
-      icon: 'success',
-      showCloseButton: true,
-      showConfirmButton: false,
-    });
+        icon: 'success',
+        showCloseButton: true,
+        showConfirmButton: false,
+      });
 
-    // Agregar un listener para el evento close
-    if (swalResult.isDismissed && swalResult.dismiss === Swal.DismissReason.close) {
-      
-      location.reload(); // Esto recarga la página
+      // Agregar un listener para el evento close
+      if (swalResult.isDismissed && swalResult.dismiss === Swal.DismissReason.close) {
+
+        location.reload(); // Esto recarga la página
+      }
+
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Ocurrió un error durante la compra. Por favor, inténtalo de nuevo.',
+        icon: 'error',
+      });
     }
-
-  } catch (error) {
-    Swal.fire({
-      title: 'Error',
-      text: 'Ocurrió un error durante la compra. Por favor, inténtalo de nuevo.',
-      icon: 'error',
-    });
-  }
-});
+  });
 
 
 
@@ -154,10 +156,10 @@ botonCompra.addEventListener('click', async (event) => {
 
 
 <style>
-        body {
-            background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
+  body {
+    background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+</style>

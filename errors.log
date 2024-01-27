@@ -2,3 +2,4 @@
 {"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T14:13:28.122Z"}
 {"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T22:04:11.261Z"}
 {"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T22:06:37.164Z"}
+{"kind":"ObjectId","level":"error","path":"_id","reason":{},"stringValue":"\"[object Object]\"","timestamp":"2024-01-27T22:04:00.541Z","value":"[object Object]","valueType":"string"}
