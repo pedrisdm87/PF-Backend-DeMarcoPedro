@@ -11,9 +11,9 @@ const router = Router()
 
 router.get('/', handlePolicies(['USER', 'ADMIN']), getProductsViewRouterController)
 
-router.get('/realTimeProducts', handlePolicies(['USER', 'ADMIN']), realTimeProductsVRController)
+router.get('/realTimeProducts', handlePolicies(['ADMIN']), realTimeProductsVRController) 
 
-router.get('/realTimeProducts/:pid', handlePolicies(['USER', 'ADMIN']), realTimeProductsVRController)
+router.get('/realTimeProducts/:pid', handlePolicies(['ADMIN']), realTimeProductsVRController) 
 
 router.get('/:cid', handlePolicies(['USER', 'ADMIN']), cartViewRouterController)
 

@@ -53,7 +53,7 @@
       .then(result => result.json())
       .then(result => {
         if (result.status === 'error') throw new Error(result.error)
-        alert(`Producto eliminado con exito`)
+        alert(`¡Product removed from cart successfully!`)
         window.location.href = '/carts/{{cart._id}}'
       })
       .catch(err => alert(`Ocurrió un error :(\n${err}`))

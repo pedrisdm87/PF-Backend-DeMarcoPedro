@@ -67,8 +67,6 @@
 
 
     <script>
-      document.getElementById('category').placeholder = {{#if productToUpdate}}{{productToUpdate.category}}{{else}}'category'{{/if}};
-      document.getElementById('createProduct').addEventListener('click', () => {
         const product = {
           title: document.getElementById("title").value,
           description: document.getElementById("description").value,
@@ -102,25 +100,28 @@
           .catch(error => {
             console.log(`Error en la subida de producto`, error)
           })
-      })
+      </script>
+
+      <script>
+      updateProduct = (pid) => {
+    const form = document.getElementById('productToUpdate');
+    const formData = {       
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        price: document.getElementById("price").value,
+        code: document.getElementById("code").value,
+        category: document.getElementById("category").value,
+        stock: document.getElementById("stock").value,
+        thumbnail: document.getElementById("thumbnail").value,
+        status: document.getElementById("status").value 
+        }
+
+    // Filtrar propiedades con valores no nulos o vacíos
+    const filteredFormData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== null && value !== '')
+    );
 
 
-      let updateProduct = (pid) => {
-        // Obtener el formulario por su ID
-        const form = document.getElementById('form');
-
-        // Crear un objeto para almacenar los datos del formulario
-        const formData = {
-          title: form.querySelector('#title').value,
-          description: form.querySelector('#description').value,
-          price: form.querySelector('#price').value,
-          code: form.querySelector('#code').value,
-          category: form.querySelector('#category').value,
-          stock: form.querySelector('#stock').value,
-          thumbnail: form.querySelector('#thumbnail').value,
-          status: form.querySelector('#status').value
-        };
-        console.log('formData update', formData)
         fetch(`/api/products/${pid}`, {
           method: 'put',
           headers: {
