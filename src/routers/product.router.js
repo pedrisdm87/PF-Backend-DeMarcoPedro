@@ -10,7 +10,7 @@ router.get("/", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), productsResponse)
 
 router.get("/:pid", handlePolicies(['USER', 'ADMIN', 'PREMIUM']), getProductsbyIDController)
 
-router.post("/", handlePolicies(['ADMIN']), createProductOnDBController) // To Do: Remove user permissions
+router.post("/", handlePolicies(['ADMIN']), createProductOnDBController) 
 
 router.put("/:pid", handlePolicies(['ADMIN', 'PREMIUM']), updateProductByIdController)
 
