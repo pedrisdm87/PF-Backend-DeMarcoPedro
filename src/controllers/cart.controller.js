@@ -185,67 +185,6 @@ export const deleteCartController = async (req, res) => {
     }
 }
 
-
-/* export const purchaseController = async(req, res) => {
-    const cid = req.params.cid
-    
-    try {
-      const cart = await CartService.getCartById(cid)
-      if (!cart) {
-        return res.status(404).json({ status: 'error', error: `Carts not found!` });
-    }
-  
-      if (cart.products.length === 0) {
-        return res.status(404).json({ status: 'error', error: `Carts empty` })
-      }
-  
-      let ticketConProductos = []
-      let actualizacionDeCart = []
-      let amount = 0
-  
-
-            for (const item of cart.products) {
-            const product = await ProductService.getProductByIDFromDB(item.product)
-           
-            if (!product) {
-                return res.status(404).json({ status: 'error', error: `Producto no encontrado` })
-            }
-            if (item.quantity <= product.stock) {
-                
-                const stockActualizado = (product.stock -= item.quantity)
-                await ProductService.updateProductInDB(product._id, stockActualizado)
-                
-                amount += product.price * item.quantity;
-                ticketConProductos.push({
-                    product: product._id,
-                    title: product.title,
-                    description: product.description,
-                    price: product.price,
-                    quantity: item.quantity,
-                })
-            } else {
-                actualizacionDeCart.push(item);
-            }
-        }
-            const ticket = await TicketService.createTicket({
-            code: generarCodigo(10), 
-            products: ticketConProductos,
-            amount,
-            purchaser: req.session.user.email 
-        })
-       
-        const emailResult = await getbill(req.session.user.email, ticket)
-
-        if (emailResult.success) {
-         res.status(200).json({ status: 'success', payload: ticket, message: emailResult.message })
-        } else {
-         res.status(500).json({ status: 'error', error: emailResult.error })
-        }
-    } catch (err) {
-        res.status(500).json({ status: 'error', error: err.message })
-    }
-}*/
-
 export const purchaseController = async(req, res) => {
     try {
       const cid = req.params.cid
