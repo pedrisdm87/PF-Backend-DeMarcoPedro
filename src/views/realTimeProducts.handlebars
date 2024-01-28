@@ -154,7 +154,7 @@
             console.log('result put', result)
             if (result.status === 'error') throw new Error(result.error)
             alert(`Product update successfully!`)
-            form.reset()
+            window.location.href = '/products'
           })
           .catch(err => alert(`Ocurrió un error :(\n${err}`))
       })
