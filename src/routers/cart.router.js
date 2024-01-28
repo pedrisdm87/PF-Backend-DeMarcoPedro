@@ -12,9 +12,9 @@ router.post('/', createCartController)
 
 router.post('/:cid/product/:pid', handlePolicies(['USER']), updatedCartController)
 
-router.put('/:cid', updatedCartDataController)
+router.put('/:cid', handlePolicies(['USER']), updatedCartDataController)
 
-router.put('/:cid/product/:pid', updatedCartController1)
+router.put('/:cid/product/:pid', handlePolicies(['USER']), updatedCartController1)
 
 router.delete('/:cid/product/:pid', handlePolicies(['USER']), deleteProductFromCartController)
 
