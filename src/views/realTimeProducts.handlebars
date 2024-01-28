@@ -46,11 +46,13 @@
         <div class="mb-3">
           <input type="boolean" class="form-control" name="status" id="status" placeholder="True/False" required />
         </div>
-        <button type="button" class="btn btn-success form-control fw-bold" id="createProduct">Add Movie</button>
-        <br>
-        <br>
+
         <div>
+          {{#if productToUpdate}}
           <button type="button" class="btn btn-info form-control fw-bold" id="updateProduct">Actualizar</button>
+          {{else}}
+          <button type="button" class="btn btn-success form-control fw-bold" id="createProduct">Add Movie</button>
+          {{/if}}
         </div>
       </form>
     </div>
@@ -65,8 +67,23 @@
       }
     </style>
 
+    <script>
+      if ('{{productToUpdate}}') {
+        document.getElementById("title").value = '{{productToUpdate.title}}';
+        document.getElementById("description").value = '{{productToUpdate.description}}';
+        document.getElementById("price").value = '{{productToUpdate.price}}';
+        document.getElementById("code").value = '{{productToUpdate.code}}';
+        document.getElementById("category").value = '{{productToUpdate.category}}';
+        document.getElementById("stock").value = '{{productToUpdate.stock}}';
+        document.getElementById("thumbnail").value = '{{productToUpdate.thumbnail}}';
+        document.getElementById("status").value = '{{productToUpdate.status}}';
+      }
+      //console.log('Producto a actualiazar: ', '{{productToUpdate.category}}')
+
+    </script>
 
     <script>
+      document.getElementById('createProduct').addEventListener('click', () => {
         const product = {
           title: document.getElementById("title").value,
           description: document.getElementById("description").value,
@@ -100,42 +117,45 @@
           .catch(error => {
             console.log(`Error en la subida de producto`, error)
           })
-      </script>
+      })
+    </script>
 
-      <script>
-      updateProduct = (pid) => {
-    const form = document.getElementById('productToUpdate');
-    const formData = {       
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        price: document.getElementById("price").value,
-        code: document.getElementById("code").value,
-        category: document.getElementById("category").value,
-        stock: document.getElementById("stock").value,
-        thumbnail: document.getElementById("thumbnail").value,
-        status: document.getElementById("status").value 
+    <script>
+
+      document.getElementById('updateProduct').addEventListener('click', () => {
+
+        const form = document.getElementById('form');
+        const formData = {
+          title: document.getElementById("title").value,
+          description: document.getElementById("description").value,
+          price: document.getElementById("price").value,
+          code: document.getElementById("code").value,
+          category: document.getElementById("category").value,
+          stock: document.getElementById("stock").value,
+          thumbnail: document.getElementById("thumbnail").value,
+          status: document.getElementById("status").value
         }
 
-    // Filtrar propiedades con valores no nulos o vacíos
-    const filteredFormData = Object.fromEntries(
-        Object.entries(formData).filter(([_, value]) => value !== null && value !== '')
-    );
+        // Filtrar propiedades con valores no nulos o vacíos
+        const filteredFormData = Object.fromEntries(
+          Object.entries(formData).filter(([_, value]) => value !== null && value !== '')
+        );
 
 
-        fetch(`/api/products/${pid}`, {
+        fetch(`/api/products/{{productToUpdate._id}}`, {
           method: 'put',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(filteredFormData),
         })
           .then(result => result.json())
           .then(result => {
             console.log('result put', result)
             if (result.status === 'error') throw new Error(result.error)
-            alert(`Product update succefully ${result._id}!`)
+            alert(`Product update successfully!`)
             form.reset()
           })
           .catch(err => alert(`Ocurrió un error :(\n${err}`))
-      }
+      })
     </script>
