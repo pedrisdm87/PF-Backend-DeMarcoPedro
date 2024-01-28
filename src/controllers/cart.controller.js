@@ -218,7 +218,7 @@ export const purchaseController = async(req, res) => {
           amount += (productToPurchase.price * cartToPurchase.products[index].quantity)
   
           //colocamos el producto en el Ticket (en memoria)
-          productsToTicket.push({ product: productToPurchase._id, price: productToPurchase.price, quantity: cartToPurchase.products[index].quantity})
+          productsToTicket.push({ productTitle: productToPurchase.title, product: productToPurchase._id, price: productToPurchase.price, quantity: cartToPurchase.products[index].quantity})
         }
         
       }

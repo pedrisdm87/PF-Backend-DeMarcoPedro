@@ -7,6 +7,7 @@ const ticketSchema = new mongoose.Schema({
     products: {
         type: [{
             _id: false,
+            productTitle: String,
             product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "products"

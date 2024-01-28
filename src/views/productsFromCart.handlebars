@@ -83,22 +83,6 @@
     }
   };
 
-
-  const checkoutCorreo = () => {
-    fetch(`/checkoutCorreo`, {
-      method: "POST",
-    })
-      .then((result) => result.json())
-      .then((result) => {
-        if (result.status === 'error') {
-          throw new Error(result.error);
-        } else {
-          console.log('Su compra fue enviada por correo');
-        }
-      })
-      .catch(error => alert('Ocurrió un error: ' + error));
-  };
-
   const botonCompra = document.getElementById('botonCompra');
 
   botonCompra.addEventListener('click', async (event) => {
@@ -107,7 +91,6 @@
     try {
       const ticketDetails = await checkout();
 
-      await checkoutCorreo();
 
       const swalResult = await Swal.fire({
         title: '¡Compra realizada con éxito!',
@@ -119,7 +102,7 @@
           <ul>
             ${ticketDetails.products.map(product => `
               <li>
-                ${product.quantity} x ${product.product} - $${product.price * product.quantity}
+                ${product.quantity} x ${product.productTitle} - $${product.price * product.quantity}
               </li>
             `).join('')}
           </ul>
