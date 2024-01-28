@@ -13,6 +13,8 @@ router.get('/', handlePolicies(['USER', 'ADMIN']), getProductsViewRouterControll
 
 router.get('/realTimeProducts', handlePolicies(['USER', 'ADMIN']), realTimeProductsVRController)
 
+router.get('/realTimeProducts/:pid', handlePolicies(['USER', 'ADMIN']), realTimeProductsVRController)
+
 router.get('/:cid', handlePolicies(['USER', 'ADMIN']), cartViewRouterController)
 
 

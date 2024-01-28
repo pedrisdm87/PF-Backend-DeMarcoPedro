@@ -3,3 +3,17 @@
 {"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T22:04:11.261Z"}
 {"level":"error","message":"Error al intentar termianar la compra","timestamp":"2024-01-17T22:06:37.164Z"}
 {"kind":"ObjectId","level":"error","path":"_id","reason":{},"stringValue":"\"[object Object]\"","timestamp":"2024-01-27T22:04:00.541Z","value":"[object Object]","valueType":"string"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:23:47.781Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:23:47.786Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:24:32.017Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:24:32.020Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:24:43.284Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:24:43.287Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:28:30.313Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:28:30.315Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:29:44.865Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:29:44.867Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:31:06.125Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:31:06.128Z"}
+{"level":"error","message":"middleware ERROR","timestamp":"2024-01-28T01:31:36.684Z"}
+{"level":"error","message":"ERROR SIN CONTROLAR","timestamp":"2024-01-28T01:31:36.686Z"}
