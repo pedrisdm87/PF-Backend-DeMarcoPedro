@@ -1,4 +1,4 @@
-import productModel from '../models/product.model.js';
+import productModel from "../models/product.model.js";
 
 // Función para crear un nuevo producto
 export async function createProduct(data) {
@@ -9,7 +9,6 @@ export async function createProduct(data) {
     throw Error(`Error al crear el producto: ${error.message}`);
   }
 }
-
 
 // Exporta las funciones para su uso en otros archivos
 export { createProduct };

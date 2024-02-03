@@ -1,18 +1,5 @@
 import userModel from "../dao/models/user.model.js";
 
-// export default class UserDAO {
-//   getAll = async () => await userModel.find().lean().exec();
-//   getById = async (id) => await userModel.findById(id).populate().lean().exec();
-//   create = async (data) => await userModel.create(data);
-//   update = async (id, data) =>
-//     await userModel.findByIdAndUpdate(id, data, { returnDocument: "after" });
-//   delete = async (id) => userModel.findByIdAndDelete(id);
-//   findOne = async (query) => await userModel.findOne(query);
-// }
-
-
-// ////////////------------------OBJETO--------------////////////
-
 const userDAO = {
   getAll: async () => {
     try {
@@ -41,9 +28,11 @@ const userDAO = {
     }
   },
 
-  update: async (id,data) => {
+  update: async (id, data) => {
     try {
-      const result = await userModel.findByIdAndUpdate(id, data, { returnDocument: "after" });
+      const result = await userModel.findByIdAndUpdate(id, data, {
+        returnDocument: "after",
+      });
       return result;
     } catch (err) {
       throw err;
@@ -52,7 +41,7 @@ const userDAO = {
 
   delete: async (id) => {
     try {
-      const result = await userModel.findByIdAndDelete(id)
+      const result = await userModel.findByIdAndDelete(id);
       return result;
     } catch (err) {
       throw err;
@@ -66,7 +55,6 @@ const userDAO = {
       throw err;
     }
   },
-
 };
 
 export default userDAO;

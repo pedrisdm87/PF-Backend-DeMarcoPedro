@@ -1,4 +1,4 @@
-import cartModel from '../models/cart.model.js'
+import cartModel from "../models/cart.model.js";
 
 // Función para crear un nuevo carrito
 export async function createCart() {

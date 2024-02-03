@@ -1,4 +1,4 @@
-import userModel from '../models/user.model.js';
+import userModel from "../models/user.model.js";
 
 // Función para crear un nuevo usuario
 export async function createUser(data) {
@@ -15,10 +15,11 @@ export async function findUserByEmail(email) {
   try {
     return await userModel.findOne({ email });
   } catch (error) {
-    throw new Error(`Error al buscar usuario por correo electrónico: ${error.message}`);
+    throw new Error(
+      `Error al buscar usuario por correo electrónico: ${error.message}`
+    );
   }
 }
-
 
 // Exporta las funciones para su uso en otros archivos
 export { createUser, findUserByEmail };
