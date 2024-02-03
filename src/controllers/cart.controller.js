@@ -184,7 +184,7 @@ export const deleteCartController = async (req, res) => {
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
-
+/*
 export const purchaseController = async(req, res) => {
     try {
       const cid = req.params.cid
@@ -250,4 +250,66 @@ export const purchaseController = async(req, res) => {
         logger.error('Error al intentar termianar la compra')
         res.status(500).json({ status: 'error', error: err.message })
     }
-  }
+  }*/
+
+  export const purchaseController = async (req, res) => {
+    try {
+        const cid = req.params.cid;
+        const cartToPurchase = await CartService.getCartById(cid);
+
+        if (cartToPurchase === null) {
+            return res.status(404).json({ status: 'error', error: `Cart with id=${cid} Not found` });
+        }
+
+        let productsToTicket = [];
+        let productsAfterPurchase = cartToPurchase.products;
+        let amount = 0;
+
+        for (let index = 0; index < cartToPurchase.products.length; index++) {
+            const productToPurchase = await ProductService.getProductByIDFromDB(cartToPurchase.products[index].product);
+
+            if (productToPurchase === null) {
+                return res.status(400).json({ status: 'error', error: `Product with id=${cartToPurchase.products[index].product} does not exist. We cannot purchase this product` });
+            }
+
+            if (cartToPurchase.products[index].quantity <= productToPurchase.stock) {
+                // Actualizamos el stock del producto que se está comprando
+                productToPurchase.stock -= cartToPurchase.products[index].quantity;
+                await ProductService.updateProductInDB(productToPurchase._id, { stock: productToPurchase.stock });
+
+                // Eliminamos (del carrito) los productos que se han comprado (en memoria)
+                productsAfterPurchase = productsAfterPurchase.filter(item => item.product.toString() !== cartToPurchase.products[index].product.toString());
+
+                // Calculamos el amount (total del ticket)
+                amount += (productToPurchase.price * cartToPurchase.products[index].quantity);
+
+                // Colocamos el producto en el Ticket (en memoria)
+                productsToTicket.push({
+                    productTitle: productToPurchase.title,
+                    product: productToPurchase._id,
+                    price: productToPurchase.price,
+                    quantity: cartToPurchase.products[index].quantity
+                });
+            }
+        }
+
+        // Actualizamos el carrito después de la compra
+        const updatedCart = await CartService.updateCart(cid, {
+            products: productsAfterPurchase
+        }, {
+            returnDocument: 'after'
+        });
+
+        // Verificamos si hay productos en el carrito después de la compra
+        if (updatedCart.products.length > 0) {
+            // Si hay productos en el carrito, puedes enviar una respuesta con el estado exitoso y el carrito actualizado
+            res.status(200).json({ status: 'success', payload: updatedCart, message: 'Purchase successful' });
+        } else {
+            // Si no hay productos en el carrito, puedes enviar una respuesta indicando que el carrito está vacío
+            res.status(200).json({ status: 'success', payload: null, message: 'Cart is empty after purchase' });
+        }
+    } catch (err) {
+        logger.error('Error al intentar terminar la compra');
+        res.status(500).json({ status: 'error', error: err.message });
+    }
+};
