@@ -1,6 +1,5 @@
 export const generateErrorInfo = (product) => {
-    
-    return `
+  return `
     Una o mas propiedades están incompletas o no son válidas.
     Lista de propiedades obligatorias:
         - title: Debe ser un String = (${product.title})
@@ -10,11 +9,11 @@ export const generateErrorInfo = (product) => {
         - category: Debe ser un String = (${product.category})
         - stock: Debe ser un número = (${product.stock})
         - thumbnail: Debe ser un Array = (${product.thumbnail})
-    `
-}
+    `;
+};
 
 export const generateErrorInfoTwo = (data) => {
-    return `
+  return `
         La respuesta del servidor fue: ${data}
-    `
-}
+    `;
+};

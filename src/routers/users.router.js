@@ -1,9 +1,8 @@
 import { Router } from "express";
-import {updatedUserRoleController} from '../controllers/users.controller.js'
+import { updatedUserRoleController } from "../controllers/users.controller.js";
 
-const router = Router()
+const router = Router();
 
-router.get("/premium/:email", updatedUserRoleController) //C
+router.get("/premium/:email", updatedUserRoleController); //C
 
-
-export default router
+export default router;

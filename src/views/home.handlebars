@@ -4,145 +4,143 @@
 <br>
 <br>
 <div class="container text-center mt-3">
-    <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/current">{{user.email}}</a>) - Role: {{user.role}}</h2>
-    <br>
-    <a href="/products/realTimeProducts" class="btn btn-success">Crear / Actualizar Producto</a> | <a href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info"> Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
+  <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/current">{{user.email}}</a>) - Role: {{user.role}}</h2>
+  <br>
+  <a href="/products/realTimeProducts" class="btn btn-success">Crear / Actualizar Producto</a> | <a
+    href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info">
+    Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
 </div>
 <hr />
 
 <div class="container mt-5">
-    <h2 class="text-center">Cartelera de Cine</h2>
+  <h2 class="text-center">Cartelera de Cine</h2>
 
-    <hr />
+  <hr />
 
-    <div class="table-responsive my-5">
-        <h2 class="text-center">Peliculas</h2>
-        <br>
-        <table class="table table-bordered table-striped table-hover text-center">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Código</th>
-                    <th>Categoría</th>
-                    <th>Stock</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each products}}
-                    <tr>
-                        <td>{{this.title}}</td>
-                        <td>{{this.description}}</td>
-                        <td>{{this.price}}</td>
-                        <td>{{this.code}}</td>
-                        <td>{{this.category}}</td>
-                        <td>{{this.stock}}</td>
-                        <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al carrito</button></td> 
-                        <td><button class="btn btn-danger" onclick="deleteProduct('{{this._id}}')"> ❌ </button></td>
-                        <td><button class="btn btn-success" onclick="window.location.href='/products/realTimeProducts/' + '{{this._id}}'">Actualizar</button></td>
-                     </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </div>
-
-    <hr />
-
-    <div class="text-center">
-        {{#if paginateInfo.hasPrevPage}}
-            <a class="btn btn-primary" href="{{paginateInfo.prevLink}}">Anterior</a>
-        {{/if}}
-        
-        {{#each paginateInfo.totalPages}}
-            <a class="btn btn-secondary" href="{{this.link}}">{{this.page}}</a>
+  <div class="table-responsive my-5">
+    <h2 class="text-center">Peliculas</h2>
+    <br>
+    <table class="table table-bordered table-striped table-hover text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Código</th>
+          <th>Categoría</th>
+          <th>Stock</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+        <tr>
+          <td>{{this.title}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.code}}</td>
+          <td>{{this.category}}</td>
+          <td>{{this.stock}}</td>
+          <td><button class="btn btn-info" onclick="addProductToCart('{{../user.cart}}', '{{this._id}}')">Agregar al
+              carrito</button></td>
+          <td><button class="btn btn-danger" onclick="deleteProduct('{{this._id}}')"> ❌ </button></td>
+          <td><button class="btn btn-success"
+              onclick="window.location.href='/products/realTimeProducts/' + '{{this._id}}'">Actualizar</button></td>
+        </tr>
         {{/each}}
-        
-        {{#if paginateInfo.hasNextPage}}
-            <a class="btn btn-primary" href="{{paginateInfo.nextLink}}">Siguiente</a>
-        {{/if}}
-    </div>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  <div class="text-center">
+    {{#if paginateInfo.hasPrevPage}}
+    <a class="btn btn-primary" href="{{paginateInfo.prevLink}}">Anterior</a>
+    {{/if}}
+
+    {{#each paginateInfo.totalPages}}
+    <a class="btn btn-secondary" href="{{this.link}}">{{this.page}}</a>
+    {{/each}}
+
+    {{#if paginateInfo.hasNextPage}}
+    <a class="btn btn-primary" href="{{paginateInfo.nextLink}}">Siguiente</a>
+    {{/if}}
+  </div>
 </div>
 
 
 
-    <script>
-   
-function addProductToCart(cid, pid) {
-   
-  fetch(`./api/carts/${cid}/product/${pid}`, {
-    method: 'post',
-  })
-    .then(result => {
-      if (!result.ok) {
-        throw new Error(`Error: ${result.status} - ${result.statusText}`);
-      }
-      return result.json();
-    })
-    .then(result => {
-      if (result.status === 'error') {
-        throw new Error(result.error);
-      } else {
-        alert(`¡Producto agregado al carrito con éxito!`);
-      }
-    })
-    .catch(err => alert(`Ocurrió un error: ${err}`));
-} 
+<script>
 
-deleteProduct = (pid) => {
+  function addProductToCart(cid, pid) {
+
+    fetch(`./api/carts/${cid}/product/${pid}`, {
+      method: 'post',
+    })
+      .then(result => {
+        if (!result.ok) {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+        return result.json();
+      })
+      .then(result => {
+        if (result.status === 'error') {
+          throw new Error(result.error);
+        } else {
+          alert(`¡Producto agregado al carrito con éxito!`);
+        }
+      })
+      .catch(err => alert(`Ocurrió un error: ${err}`));
+  }
+
+  deleteProduct = (pid) => {
     fetch(`/api/products/${pid}`, {
-        method: 'delete'
-        })
-       
-    .then(result => result.json())
-    .then(result => {
+      method: 'delete'
+    })
+
+      .then(result => result.json())
+      .then(result => {
         if (result.status === 'error') throw new Error(result.error)
         alert(`El producto se borro de la base de datos!`)
         window.location.href = '/products'
-    })
-    .catch(err => alert(`Ocurrió un error :(\n${err}`))
-}
+      })
+      .catch(err => alert(`Ocurrió un error :(\n${err}`))
+  }
 
 
- /*
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(filteredFormData),
-        })*/
 
-function removeProductFromCart(cid, pid) {
-  fetch(`/api/carts/${cid}/product/${pid}`, {
-    method: 'delete',  // Utiliza el método 'delete' para la solicitud de eliminación
-  })
-    .then(result => {
-      if (!result.ok) {
-        throw new Error(`Error: ${result.status} - ${result.statusText}`);
-      }
-      return result.json();
+  function removeProductFromCart(cid, pid) {
+    fetch(`/api/carts/${cid}/product/${pid}`, {
+      method: 'delete',  // Utiliza el método 'delete' para la solicitud de eliminación
     })
-    .then(result => {
-      if (result.status === 'error') {
-        throw new Error(result.error);
-      } else {
-        alert(`¡Product removed from cart successfully!`);
-      }
-    })
-    .catch(err => alert(`Ocurrió un error: ${err}`));
-}
+      .then(result => {
+        if (!result.ok) {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+        return result.json();
+      })
+      .then(result => {
+        if (result.status === 'error') {
+          throw new Error(result.error);
+        } else {
+          alert(`¡Product removed from cart successfully!`);
+        }
+      })
+      .catch(err => alert(`Ocurrió un error: ${err}`));
+  }
 
 </script>
 
 
 
 <style>
-        body {
-            background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg'); 
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
+  body {
+    background-image: url('https://i.ibb.co/hMWTddk/dise-ado-fondo-de-tira-de-pel-cula-vac-o.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+</style>
