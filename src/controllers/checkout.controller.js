@@ -11,6 +11,9 @@ export const getbill = async (destinatario, ticket) => {
         user: config.checkout.checkoutUser,
         pass: config.checkout.checkoutPass,
       },
+      tls: {
+        rejectUnauthorized: false, // Agrega esta línea para evitar el error del certificado
+      },
     };
 
     let transporter = nodemailer.createTransport(configMail);
