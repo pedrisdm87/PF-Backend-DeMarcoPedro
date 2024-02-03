@@ -1,6 +1,4 @@
 import { getProducts } from "./product.controller.js";
-import { getProductsFromCart } from "./cart.controller.js";
-import * as cartDAO from "../dao/cart.dao.js";
 import config from "../config/config.js";
 import { CartService } from "../services/services.js";
 import logger from "../utils/logger.js";
@@ -54,7 +52,7 @@ export const realTimeProductsVRController =
         res.render("realTimeProducts", { products: result });
       } else {
         const result = await ProductService.getProductByIDFromDB(productId);
-        console.log('Producto a actualizar: ', result)
+        console.log("Producto a actualizar: ", result);
         res.render("realTimeProducts", { productToUpdate: result });
       }
     } catch (err) {
