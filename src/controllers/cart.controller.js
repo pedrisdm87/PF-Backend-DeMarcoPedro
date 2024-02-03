@@ -1,10 +1,6 @@
 import productModel from '../dao/models/product.model.js'
 import cartModel from "../dao/models/cart.model.js"
 import { CartService, ProductService } from '../services/services.js'
-import  ticketModel  from '../dao/models/ticket.model.js'
-import generarCodigo from '../utils/utils.js'
-import getbill from '../controllers/checkout.controller.js'
-import { TicketService } from '../services/services.js'
 import logger from '../utils/logger.js'
 
 
