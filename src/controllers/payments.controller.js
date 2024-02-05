@@ -7,7 +7,8 @@ const stripe = new Stripe(config.stripe.secretKey);
 
 export const createSession = async (req, res) => {
   try {
-    const userCart = req.user.user.cart;
+    const userCart = req.user.cart;
+    console.log('USERCART:',userCart);
     const cart = await CartService.getCartById(userCart);
 
     if (!cart) {

@@ -7,8 +7,7 @@
   <br>
   <a href="/products" class="btn btn-primary">Products</a> | <a class="btn btn-warning"
     href="/api/carts/{{cart._id}}/purchase" id="botonCompra">Comprar</a> | <a href="/api/sessions/logout"
-    class="btn btn-danger">Logout</a> |
-    <a href="/success" class="btn btn-primary">pay</a> |
+    class="btn btn-danger">Logout</a> | <a id="paybutton" class="btn btn-danger">Pay</a> |
 </div>
 <br>
 
@@ -132,7 +131,15 @@
     }
   });
 
-
+const button = document.getElementById('paybutton');
+    button.addEventListener('click', async() => {
+        const res = await fetch('/pay/create-checkout-session', {
+                method: 'POST',
+        })
+        const data = await res.json();
+        //console.log(data)
+        window.location.href = data.url
+    })
 
 </script>
 

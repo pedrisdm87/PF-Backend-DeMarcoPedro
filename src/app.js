@@ -25,7 +25,7 @@ import paymentsRouter from "./routers/payments.router.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.static('./src/public'))
+app.use(express.static('./src/public'))
 
 const swaggerOptions = {
   definition: {
@@ -81,7 +81,6 @@ try {
     req.io = io;
     next();
   });
-
   app.use("/", sessionViewsRouter);
   app.use("/api/sessions", sessionRouter);
   app.use("/api/products", productsRouter);
