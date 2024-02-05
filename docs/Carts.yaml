@@ -1,7 +1,7 @@
 paths:
   /carts:
     get:
-      tags:
+      tags: 
         - Carts
       summary: Get all carts
       responses:
@@ -14,14 +14,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Cart'
     post:
-      tags:
+      tags: 
         - Carts
       summary: Create a new cart
       requestBody:
         required: true
         content:
           application/json:
-            schema:
+            schema: 
               type: object
               properties:
                 items:
@@ -31,7 +31,7 @@ paths:
                     properties:
                       producto:
                         type: string
-                        format: objectId
+                        format: ObjectId
                         description: ID of the product to add to the cart
                       cantidad:
                         type: number
@@ -59,7 +59,7 @@ paths:
 
   /carts/{cartId}:
     get:
-      tags:
+      tags: 
         - Carts
       summary: Get a cart by ID
       parameters:
@@ -76,39 +76,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Cart'
-        '404':
-          description: Cart not found
-          content:
-            application/json:
-              example:
-                message: Cart not found        
     put:
-      tags:
+      tags: 
         - Carts
       summary: Update a cart by ID
       parameters:
-         - name: cartId
-           in: path
-           required: true
-           description: ID of the cart
-           schema:
-              type: string
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
-            schema:
+            schema: 
               type: object
               properties:
                 items:
                   type: array
-                  properties:
-                    producto:
-                      type: string
-                      format: string
-                      description: ID of the product to add to the cart
-                    cantidad:
-                      type: number
+                  items:
+                    type: object
+                    properties:
+                      producto:
+                        type: string
+                        format: ObjectId
+                        description: ID of the product to add to the cart
+                      cantidad:
+                        type: number
                 user:
                   type: object
                   properties:
@@ -129,14 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Cart' 
-        '404':
-          description: Cart not found
-          content:
-            application/json:
-              example:
-                message: Cart not found
-
+                $ref: '#/components/schemas/Cart'
     delete:
       tags: 
         - Carts
@@ -145,6 +134,7 @@ paths:
         - name: cartId
           in: path
           required: true
+          description: ID of the cart
           schema:
             type: string
       responses:
@@ -154,51 +144,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Cart'
-        '404':
-          description: Cart not found
-          content:
-            application/json:
-              example:
-                message: Cart not found              
 
   /carts/{cartId}/items/{itemId}:
     delete:
-      tags:
+      tags: 
         - Carts
       summary: Delete an item from the cart
-      parameters: 
-        - name: cartId 
+      parameters:
+        - name: cartId
           in: path
-          required: true 
-          description: ID of the cart 
-          schema: 
+          required: true
+          description: ID of the cart
+          schema:
             type: string
         - name: itemId
           in: path
           required: true
           description: ID of the item to delete
           schema:
-            type: string     
+            type: string
       responses:
         '200':
-          description: Successful operation 
+          description: Successful operation
           content:
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/Cart' 
-        '404':
-        description: Item not found
-        content:
-          application/json:
-            example:
-              message: Item not found             
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
 
 components:
   schemas:
-    Cart: 
+    Cart:
       type: object
       properties:
-        items: 
+        items:
           type: array
           items:
             type: object
@@ -220,4 +198,4 @@ components:
       required:
         - items
         - purchase_datetime
-        - code   
+        - code

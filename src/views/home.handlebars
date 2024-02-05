@@ -6,9 +6,13 @@
 <div class="container text-center mt-3">
   <h2>Usuario: {{user.first_name}} {{user.last_name}} (<a href="/current">{{user.email}}</a>) - Role: {{user.role}}</h2>
   <br>
+  <br>
+  <h1>UserID: {{user.id}}</h1>
+  </h1>
   <a href="/products/realTimeProducts" class="btn btn-success">Crear / Actualizar Producto</a> | <a
     href="/carts/{{user.cart}}" class="btn btn-success">Ir al carrito 🛒</a> | <a href="/chat" class="btn btn-info">
-    Chatea con Nosotros! </a> | <a href="/api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
+    Chatea con Nosotros! </a> | <a class="btn btn-warning" onclick="changeRole('{{user.id}}')">
+    Cambia tu rol </a> | <a href=" /api/sessions/logout" class="btn btn-danger">Cerrar Sesión</a>
 </div>
 <hr />
 
@@ -130,6 +134,21 @@
         }
       })
       .catch(err => alert(`Ocurrió un error: ${err}`));
+  }
+
+  changeRole = (uid) => {
+    fetch(`/api/users/premium/${uid}`, {
+      method: 'get',
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(result => result.json())
+      .then(result => {
+        if (result.status === 'success') {
+          alert(`The role was changed successfully. Please log in again to see the changes`);
+          window.location.href = '/current'
+        } else { alert(`Error: ${result.error}`); }
+      })
+      .catch(err => alert(`Ocurrió un error :(\n${err}`))
   }
 
 </script>
