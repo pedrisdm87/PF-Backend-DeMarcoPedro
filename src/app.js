@@ -20,6 +20,7 @@ import logger from "../src/utils/logger.js";
 import loggerTestRouter from "./routers/loggerTest.router.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
+import paymentRouter from "./routers/payment.router.js";
 
 const app = express();
 app.use(express.json());
@@ -91,6 +92,7 @@ try {
   app.use("/chat", chatRouter);
   app.use("/mockingproducts", mockingRouter);
   app.use("/loggerTest", loggerTestRouter);
+  app.use("/pay", paymentRouter);
   app.use(errorHandler);
   //app.use('/checkout', checkoutRouter)
 
