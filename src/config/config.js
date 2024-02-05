@@ -29,6 +29,10 @@ export default {
     enviroment:{
         Dev: process.env.ENVIROMENT_DEV,
         Prod: process.env.ENVIROMENT_PROD
+    },
+    stripe: {
+        secretKey: process.env.STRIPE_SECRET_KEY,
+        publicKey: process.env.STRIPE_PUBLIC_KEY,
     }
 
 }
