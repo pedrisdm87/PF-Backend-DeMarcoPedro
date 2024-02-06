@@ -138,7 +138,7 @@ sessionController.exchangeRole = async (req, res) => {
   try {
     const id = req.params.uid;
     const user = await UserService.findById(id);
-    console.log("info de user", user);
+    logger.log("info de user", user);
     await UserService.findAndUpdate(req.params.uid, {
       role: user.role === "user" ? "premium" : "user",
     });
