@@ -46,7 +46,7 @@ export const createSession = async (req, res) => {
 export const successController = async ( req, res ) => {
     try {
         const userEmail = req.user.user.email
-        const cartId = req.user.user.cart
+        const cartId = req.user.cart
         console.log("successController cartId: ", cartId)
         const cart = await CartService.getCartById(cartId)
         console.log("cart: ", cart)
