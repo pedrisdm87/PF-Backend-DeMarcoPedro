@@ -51,7 +51,7 @@ sessionController.failLogin = (req, res) => {
 sessionController.logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.log(err);
+      logger.error(err);
       res.status(500).render("error/base", { error: err });
     } else {
       res.redirect("/");
@@ -68,7 +68,7 @@ sessionController.githubCallback = async (req, res) => {
     req,
     res,
     () => {
-      console.log("Callback: ", req.user);
+      logger.log("Callback: ", req.user);
       req.session.user = req.user;
       res.redirect("/products");
     }
