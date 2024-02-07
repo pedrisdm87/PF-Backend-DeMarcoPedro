@@ -131,6 +131,8 @@
     }
   });
 
+  
+////////////////PAY BUTTON////////////////////////////
 const button = document.getElementById('paybutton');
     button.addEventListener('click', async() => {
         const res = await fetch('/pay/create-checkout-session', {
