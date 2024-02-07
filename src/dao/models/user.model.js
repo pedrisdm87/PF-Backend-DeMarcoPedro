@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   age: Number,
   password: String,
-  role: { type: String, default: "user" },
-  cart: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
+  role: {type: String, enum: ['user', 'admin', 'premium'], default:'user'},
+  owner: { type: String, required: true, default: 'admin', ref: "users" },
+  last_connection: { type: Date, default: Date.now }
 });
 
 mongoose.set("strictQuery", false);
