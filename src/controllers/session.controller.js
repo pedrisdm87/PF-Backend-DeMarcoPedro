@@ -102,7 +102,7 @@ sessionController.verifyToken = async (req, res) => {
       .status(404)
       .json({
         status: "error",
-        error: "Token no válido / El token ha expirado",
+        error: "Invalid Token / The token has expired",
       });
   }
   const user = userPassword.email;
