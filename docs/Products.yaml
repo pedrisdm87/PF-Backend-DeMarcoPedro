@@ -1,70 +1,215 @@
 paths:
   /api/products:
     get:
-      summary: Obtiene todos los productos
-      tags:
+      summary: Get all products on Db.
+      tags: 
         - Products
       responses:
         "200":
-          description: Los productos fueron obtenidos satisfactoriamente de la BD
+          description: DB products obained successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Producto"
+                  $ref: '#/components/schemas/Product'
         "500":
-          description: Error interno en el servidor
+          description: Error getting all products
+
     post:
-      summary: Registra un nuevo producto en la base de datos
+      summary: Create a new product
       tags:
         - Products
-      response:
-        "200":
-          description: El nuevo producto se registró con éxito
+      requestBody:
+        description: New product data
+        requested: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  required: true
+                description: 
+                  type: string
+                  required: true
+                category:
+                  type: string
+                  required: true
+                price:
+                  type: number
+                  required: true
+                thumbnails:
+                  type: array
+                code:
+                  type: number
+                  required: true
+                stock:
+                  type: number
+                  required: true
+                status:
+                  type: boolean
+                owner:
+                    type: string          
+      responses:
+        "201":
+          description: Product create successfully
+          content:
+            application/json:
+             schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Product"
         "500":
-          description: Error interno en el servidor
-components:
-  schemas:
-    Producto:
-      type: object
-      properties:
-        _id:
-          type: ObjectId
-          description: Id autogenerada por MongoDB
-        title:
-          type: String
-          description: Título del producto
-        description:
-          type: String
-          description: Descripción del producto
-        price:
-          type: Number
-          description: Precio del producto
-        code:
-          type: String
-          description: Código del producto
-        stock:
-          type: Number
-          description: Stock del producto
-        category:
-          type: String
-          description: Categoría del producto
-        thumbnail:
-          type: String
-          description: Imágenes del producto
-        owner:
-          type: String
-          description: Creador del producto
-      example:
-        _id: ObjectId("651b3f2337ca4282f6d0f3a7")
-        title: Oppenheimer
-        description: Biografia
-        price: 75
-        code: 1001
-        stock: 200
-        category: Movies
-        thumbnail: https://www.infobae.com/new-resizer/f3NsyqLZU4EFZl9fglNeNQBAwyw=/768x1152/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/H2DVBWCFAZGYDFWWN4TEASWRZI.jpg
-        owner: bordyestamp@gmail.com
+          description: Servers error. Product cannot be created
 
-         
+  /api/products/{pid}:
+    get:
+      summary: Get Product by ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product ID
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Product obtained successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "404":
+          description: Product not found
+        "500":
+          description: Error reading Product
+
+    put:
+      summary: Update product by ID
+      tags:
+        - Products
+      description: Updated product data
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+                description: 
+                  type: string
+                price:
+                  type: number
+                thumbnails:
+                  type: array
+                stock:
+                  type: number
+                status:
+                  type: boolean
+                owner:
+                  type: string
+
+      responses:
+        "201":
+          description: Updated product successfully
+          content:
+            application/json:
+              shema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "403":
+          description: You are not authorized to modify the product
+        "404":
+          description: Product not found
+        "500":
+          description: Server Error. Product cannot be updated
+
+    delete:
+      summary: Delete product by ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product ID to delete
+          schema:
+            type: string
+      responses:
+       "200":
+          description: Product deleted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+       "404":
+          description: Product cannot be found on DB
+       "500":
+          description: Server error. Product cannot be removed from DB
+
+components:
+    schemas:
+        Product:
+            type: object
+            properties:
+              _id: 
+                type: objectId
+                format: bson objectId 
+                description: MongoDB ID
+              title:
+                type: string
+                description: Product name
+              description:
+                type: string
+                description: Product data
+              price:
+                type: number
+                description: Product price
+              thumbnails:
+                type: array
+                items:
+                  type: string
+                  description: Product photo arrangement
+              code:
+                type: number
+                description: Product unique code
+              stock:
+                type: number
+                description: Product Quantity               
+              category:
+                type: string
+                description: Product Category
+              status:
+                type: boolean
+                description: Status true = active, false = disable
+              owner:
+                type: string
+                description: Product owner. This refers to the Users collection, by default it is set to USER but it can be changed to ADMIN or PREMIUM
+            required:
+                - title
+                - description
+                - price
+                - code
+                - stock
+                - category
+          
