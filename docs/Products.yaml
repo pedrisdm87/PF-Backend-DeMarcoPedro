@@ -212,4 +212,14 @@ components:
                 - code
                 - stock
                 - category
+            example:
+              _id: ObjectId("651b3f2337ca4282f6d0f3a7")
+              title: Oppenheimer
+              description: Biografia
+              price: 75
+              code: 1001
+              stock: 200
+              category: Movies
+              thumbnail: https://www.infobae.com/new-resizer/f3NsyqLZU4EFZl9fglNeNQBAwyw=/768x1152/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/H2DVBWCFAZGYDFWWN4TEASWRZI.jpg
+              owner: bordyestamp@gmail.com
           

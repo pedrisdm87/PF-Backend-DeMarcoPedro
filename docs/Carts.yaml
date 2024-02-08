@@ -203,10 +203,17 @@ components:
               quantity:
                 type: number
                 description: Products quantity on cart
-          description: List of products in the cart
+          description: List of products in the cart. These products are a reference to Products collection
       required:
         - products
       description: Shopping Cart
+      example:
+          _id: "651b3f2337ca4282f6d0f3a7"
+          products:
+            - _id: "product1"
+              product:
+                _id: "651b3f2337ca4282f6d0f3a8"
+              quantity: 2
   securitySchemes:
     bearerAuth:
       type: http
