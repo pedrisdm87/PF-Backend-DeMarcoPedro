@@ -15,52 +15,52 @@ paths:
       tags:
         - Carts
       parameters:
-        -in: path 
-        name: cid
-        required: true
-        schema:
-          type: string
+        - in: path 
+          name: cid
+          required: true
+          schema:
+            type: string
       responses:
-      '200':
-        description: Cart obtained successfully
-      '401':
-        description: Unauthorized access.
-      '404':
-        description: Cart not found
+        '200':
+          description: Cart obtained successfully
+        '401':
+          description: Unauthorized access.
+        '404':
+          description: Cart not found
     put:
       summary: Update cart
       tags:
-        -Carts
-      Parameters:
-        -in: path
-        name: cid
-        required: true
-        description: Cart identifier
-        schema:
-          type: string
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart identifier
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              type : object
-            properties:
-              products:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                    product:
-                      type: object
-                      properties:
-                        _id:
-                          type: string
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      product:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
                       quantity:
                         type: number
-                description: Products on cart
-            required:
-              - products
+                  description: Products on cart
+              required:
+                - products
       responses:
         '200':
           description: Cart updated successfully
@@ -71,11 +71,11 @@ paths:
       tags:
         - Carts
       parameters:
-        -in: path 
-        name: cid
-        required: true
-        schema:
-          type: string
+        - in: path 
+          name: cid
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Cart deleted successfully
@@ -85,13 +85,13 @@ paths:
     post:
       summary: Put products on cart
       tags:
-        -Carts
+        - Carts
       parameters:
-        -in: path
-        name: cid
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
       responses:
         '201':
           description: Product on cart successfully
@@ -102,30 +102,30 @@ paths:
         '500':
           description: Error adding product to cart
     put:
-      summmary: Update quantity on cart
+      summary: Update quantity on cart
       tags:
-        -Carts
+        - Carts
       parameters:
-        -in: path
-        name: cid
-        required: true
-        schema:
-          type: string
-        -in: path
-        name: pid
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
-          application/json
+          application/json:
             schema:
               type: object
               properties:
                 quantity:
                   type: number
               required: 
-                -quantity
+                - quantity
       responses:
         '200':
           description: Product quantity updated successfully
@@ -134,20 +134,20 @@ paths:
         '500':
           description: Error updating product quantity
     delete:
-      summmary: Delete product from cart
+      summary: Delete product from cart
       tags:
-        -Carts
+        - Carts
       parameters:
-        -in: path
-        name: cid 
-        required: true
-        schema:
-          type: string
-        -in: path
-        name: pid
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: cid 
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Product removed from cart successfully
@@ -155,13 +155,60 @@ paths:
           description: Product or cart not found
         '500':
           description: Product cannot be removed from cart
+  /api/carts/{cid}/purchase:
+    get:
+      summary: Finish purchasing process 
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Purchase made correctly
+        '400':
+          description: Empty cart
+        '404':
+          description: Product or cart cannot be found 
+        '500':
+          description: Error when trying to complete the purchase
 
-
-           
-              
-
-        
 components:
   schemas:
     Cart:
-      type:
+      type: object
+      properties:
+        _id: 
+          type: objectId
+          format: bson objectId 
+          description: MongoDB ID
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+                description: Product ID on cart
+              product:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: Product ID
+                description: Product on Cart
+              quantity:
+                type: number
+                description: Products quantity on cart
+          description: List of products in the cart
+      required:
+        - products
+      description: Shopping Cart
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: auth.middleware
