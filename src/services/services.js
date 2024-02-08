@@ -13,4 +13,4 @@ export const CartService = CartRepository(cartDAO);
 export const ProductService = ProductRepository(productDAO);
 export const UserService = UserRepository(userDAO);
 export const TicketService = TicketRepository(ticketDAO);
-export const PasswordResetService = PasswordRepository(userPasswordDAO);
+export const PassResetService = PasswordRepository(userPasswordDAO);

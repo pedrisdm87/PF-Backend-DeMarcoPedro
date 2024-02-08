@@ -5,6 +5,7 @@ const UserRepository = (userDAO) => {
   const update = async (id, data) => await userDAO.update(id, data);
   const delet = async (id) => await userDAO.delete(id);
   const findOne = async (query) => await userDAO.findOne(query);
+  const findUser = async (mail) => await userDAO.findOne(mail)
 
   return {
     getAll,
@@ -13,6 +14,7 @@ const UserRepository = (userDAO) => {
     update,
     delet,
     findOne,
+    findUser
   };
 };
 export default UserRepository;

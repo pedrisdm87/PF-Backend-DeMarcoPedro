@@ -1,6 +1,9 @@
 import UserModel from "../dao/models/user.model.js";
 import passport from "passport";
 import logger from "../utils/logger.js";
+import { UserService } from "../services/services.js";
+import generarCodigo from "../utils/utils.js";
+import { PassResetService } from "../services/services.js";
 
 const sessionController = {};
 
@@ -82,7 +85,7 @@ sessionController.forgetPass = async (req, res) => {
   if (!user) {
     return res.status(404).json({ status: "error", error: "User not found" });
   }
-  const token = generateRandomCode(16);
+  const token = generarCodigo(16);
   await PassResetService.createToken({ email, token });
   //aca llamo al mail service
   const emailResult = await restorePasswordMail(email, token);

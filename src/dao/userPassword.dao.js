@@ -1,32 +1,18 @@
-/*import UserPasswordModel from "../dao/models/user-password.model.js";
-
-const userPasswordDAO = {
-  create: async (email, token) => {
-    const createToken = await UserPasswordModel.create(email, token);
-    return createToken;
-  },
-
-  findOne: async (token) => {
-    const user = await UserPasswordModel.findOne(token);
-    return user;
-  },
-
-  deleteOne: async (id) => {
-    const updateTicket = await UserPasswordModel.deleteOne(id);
-  },
-};
-
-export default userPasswordDAO;
-*/
-
 import UserPasswordModel from "../dao/models/user-password.model.js";
 
 const userPasswordDAO = {
   create: async (email, token) => {
+    console.log("Antes de crear el token en la base de datos");
+
     try {
       const createToken = await UserPasswordModel.create({ email, token });
+      console.log("Token creado exitosamente en la base de datos");
       return createToken;
-    } catch (err) {
+    } catch (error) {
+      console.error(
+        "Error al crear el token de usuario en la base de datos:",
+        error
+      );
       throw new Error("Error al crear el token de usuario en la base de datos");
     }
   },
@@ -36,7 +22,9 @@ const userPasswordDAO = {
       const user = await UserPasswordModel.findOne({ token });
       return user;
     } catch (err) {
-      throw new Error("Error al buscar el token de usuario en la base de datos");
+      throw new Error(
+        "Error al buscar el token de usuario en la base de datos"
+      );
     }
   },
 
@@ -45,7 +33,9 @@ const userPasswordDAO = {
       const updateToken = await UserPasswordModel.deleteOne({ _id: id });
       return updateToken;
     } catch (err) {
-      throw new Error("Error al eliminar el token de usuario de la base de datos");
+      throw new Error(
+        "Error al eliminar el token de usuario de la base de datos"
+      );
     }
   },
 };
