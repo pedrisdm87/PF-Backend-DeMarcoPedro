@@ -1,6 +1,3 @@
-<br>
-<br>
-<br>
 <div class="container mt-5 text-center">
   <h2>Products from Cart</h2>
   <br>
@@ -10,9 +7,6 @@
     class="btn btn-danger">Logout</a> | <a id="paybutton" class="btn btn-danger">Pay</a> |
 </div>
 <br>
-
-
-
 <br>
 <hr />
 <div class="table-responsive my-5 container">
@@ -46,7 +40,6 @@
 </div>
 
 <script>
-
   const deleteProduct = (pid) => {
     fetch(`/api/carts/{{cart._id}}/product/${pid}`, {
       method: 'delete'
@@ -60,94 +53,71 @@
       .catch(err => alert(`Ocurrió un error :(\n${err}`))
   }
 
-
   const checkout = async () => {
     try {
       const response = await fetch(`/api/carts/{{cart._id}}/purchase`, {
         method: "GET",
       });
-      console.log(response)
       const result = await response.json();
 
       if (result.status === 'error') {
         throw new Error(result.error);
       } else {
-
         const ticketDetails = result.payload;
         console.log('Checkout con exito');
-
         return ticketDetails;
       }
     } catch (error) {
-      alert('Ocurrió un error: ' + error);
+      alert('Ocurrió un error durante el checkout: ' + error);
       throw error;
     }
   };
 
-  const botonCompra = document.getElementById('botonCompra');
-
-  botonCompra.addEventListener('click', async (event) => {
-    event.preventDefault();
-
+  const payAndCheckout = async () => {
     try {
-      const ticketDetails = await checkout();
-
-
-      const swalResult = await Swal.fire({
-        title: '¡Compra realizada con éxito!',
-        html: `
-        <div style="text-align: left;">
-          <p style="font-size: 16px;">Detalles de la compra:</p>
-          <p><strong>Código:</strong> ${ticketDetails.code}</p>
-          <p><strong>Productos:</strong></p>
-          <ul>
-            ${ticketDetails.products.map(product => `
-              <li>
-                ${product.quantity} x ${product.productTitle} - $${product.price * product.quantity}
-              </li>
-            `).join('')}
-          </ul>
-          <p><strong>Total:</strong> $${ticketDetails.amount}</p>
-          <p><strong>Comprador:</strong> ${ticketDetails.purchaser}</p>
-          <p><strong>Fecha y hora de compra:</strong> ${new Date(ticketDetails.purchase_datetime).toLocaleString()}</p>
-        </div>`,
-        icon: 'success',
-        showCloseButton: true,
-        showConfirmButton: false,
+      // Lógica para el proceso de pago
+      const payResponse = await fetch('/pay/create-checkout-session', {
+        method: 'POST',
       });
 
-      // Agregar un listener para el evento close
-      if (swalResult.isDismissed && swalResult.dismiss === Swal.DismissReason.close) {
+      const payData = await payResponse.json();
 
-        location.reload(); // Esto recarga la página
+      if (payData.status === 'error') {
+        throw new Error(payData.error);
       }
+
+      // Si el pago fue exitoso, ejecutar el proceso de checkout
+      const ticketDetails = await checkout();
+
+      // ... Código para mostrar los detalles de la compra ...
 
     } catch (error) {
       Swal.fire({
         title: 'Error',
-        text: 'Ocurrió un error durante la compra. Por favor, inténtalo de nuevo.',
+        text: 'Ocurrió un error durante el proceso. Por favor, inténtalo de nuevo.',
         icon: 'error',
       });
     }
+  };
+
+  const botonCompra = document.getElementById('botonCompra');
+  botonCompra.addEventListener('click', async (event) => {
+    event.preventDefault();
+    await payAndCheckout();
   });
 
-  
-////////////////PAY BUTTON////////////////////////////
-const button = document.getElementById('paybutton');
-    button.addEventListener('click', async() => {
-        const res = await fetch('/pay/create-checkout-session', {
-                method: 'POST',
-        })
-        const data = await res.json();
-        //console.log(data)
-        window.location.href = data.url
-    })
+  const button = document.getElementById('paybutton');
+  button.addEventListener('click', async () => {
+    const res = await fetch('/pay/create-checkout-session', {
+      method: 'POST',
+    });
+    const data = await res.json();
+    window.location.href = data.url
+  });
 
 </script>
 
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 <style>
   body {
