@@ -15,4 +15,8 @@ router.get("/logout", sessionController.logout);
 router.get("/github", sessionController.github);
 router.get("/githubcallback", sessionController.githubCallback);
 
+router.post('/forget-password', sessionController.forgetPass)
+router.get('/verify-token/:token', sessionController.verifyToken)
+router.post('/reset-password/:user', sessionController.resetPass)
+
 export default router;

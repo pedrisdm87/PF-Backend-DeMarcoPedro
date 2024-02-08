@@ -143,7 +143,6 @@ sessionController.exchangeRole = async (req, res) => {
       role: user.role === "user" ? "premium" : "user",
     });
     res.render("sessions/profile");
-    //res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
   } catch (err) {
     res.json({ status: "error", error: err.message });
   }
