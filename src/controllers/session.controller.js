@@ -4,6 +4,8 @@ import logger from "../utils/logger.js";
 import { UserService } from "../services/services.js";
 import generarCodigo from "../utils/utils.js";
 import { PassResetService } from "../services/services.js";
+import { restorePasswordMail } from "../services/mail.service.js"
+import { isValidPassword, createHash } from "../utils/utils.js"
 
 const sessionController = {};
 
@@ -118,20 +120,20 @@ sessionController.resetPass = async (req, res) => {
     //console.log('user en reset', user)
     const newPassword = req.body.newPassword;
     //comparacion pass
-    const passwordMatch = bcrypt.compareSync(newPassword, user.password);
+    const passwordMatch = isValidPassword(user, newPassword);
     if (passwordMatch) {
       return res
         .status(404)
         .json({ status: "error", message: "Contraseña igual a la anterior" });
     }
-    await UserService.findAndUpdate(user._id, {
+    await UserService.update(user._id, {
       password: createHash(newPassword),
     });
+    await PassResetService.deleteToken(user._id);
     res.json({
       status: "success",
       message: "Se ha creado una nueva contraseña",
     });
-    await PassResetService.deleteToken({ email: req.params.user });
   } catch (err) {
     res.json({ status: "error", error: err.message });
   }

@@ -5,7 +5,7 @@ const userPasswordDAO = {
     console.log("Antes de crear el token en la base de datos");
 
     try {
-      const createToken = await UserPasswordModel.create({ email, token });
+      const createToken = await UserPasswordModel.create( email, token );
       console.log("Token creado exitosamente en la base de datos");
       return createToken;
     } catch (error) {
@@ -19,11 +19,11 @@ const userPasswordDAO = {
 
   findOne: async (token) => {
     try {
-      const user = await UserPasswordModel.findOne({ token });
+      const user = await UserPasswordModel.findOne(token);
       return user;
     } catch (err) {
       throw new Error(
-        "Error al buscar el token de usuario en la base de datos"
+        ("Error al buscar el token de usuario en la base de datos", err)
       );
     }
   },
@@ -34,7 +34,7 @@ const userPasswordDAO = {
       return updateToken;
     } catch (err) {
       throw new Error(
-        "Error al eliminar el token de usuario de la base de datos"
+        ("Error al eliminar el token de usuario de la base de datos", err )
       );
     }
   },
