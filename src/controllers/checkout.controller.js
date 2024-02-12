@@ -12,7 +12,7 @@ export const getbill = async (destinatario, ticket) => {
         pass: config.checkout.checkoutPass,
       },
       tls: {
-        rejectUnauthorized: false, // Agrega esta línea para evitar el error del certificado
+        rejectUnauthorized: false, // Agregue esta línea para evitar el error del certificado
       },
     };
 
